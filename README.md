@@ -124,7 +124,7 @@ note: hostname in terms of other raspberry pi in the cluster, if there is more t
 </pre>
 11. Installing Database
 --------------------------------
-<pre>
+
 1) Install <a href='http://www.neo4j.org/download/other_versions'> Neo4J</a> on another machine (on Desktop or Laptop as Raspberry pi does not have enough system resources to run the database.)
 note: Only install version < 1.9.6 as Neo4Django have not support version 2.0.0 onwards.
 
@@ -144,8 +144,8 @@ note: Only install version < 1.9.6 as Neo4Django have not support version 2.0.0 
 
 12. Edit settings.py:
 --------------------------------
-<pre>
 
+<pre>
 NEO4J_DATABASES = {
     'default' : {
         'HOST':'192.168.1.1', #Edit the ip address to the desktop or laptop IP address that is installed with Neo4J
