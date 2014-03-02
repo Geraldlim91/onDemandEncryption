@@ -1,0 +1,30 @@
+{% if testingtesting %}
+{% comment %}
+Bootstrap styles
+{% endcomment %}
+<link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css">
+{% endif %}
+
+{% comment %}
+blueimp Gallery styles
+{% endcomment %}
+<link rel="stylesheet" href="{{ STATIC_URL }}JQuery-File-Upload/css/blueimp-gallery.min.css">
+{% comment %}
+CSS to style the file input field as button and adjust the Bootstrap progress bars
+{% endcomment %}
+<link rel="stylesheet" href="{{ STATIC_URL }}JQuery-File-Upload/css/jquery.fileupload.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}JQuery-File-Upload/css/jquery.fileupload-ui.css">
+{% comment %}
+CSS adjustments for browsers with JavaScript disabled
+{% endcomment %}
+<noscript><link rel="stylesheet" href="{{ STATIC_URL }}JQuery-File-Upload/css/jquery.fileupload-noscript.css"></noscript>
+<noscript><link rel="stylesheet" href="{{ STATIC_URL }}JQuery-File-Upload/css/jquery.fileupload-ui-noscript.css"></noscript>
+
+{% comment %}
+Shim to make HTML5 elements usable in older Internet Explorer versions 
+{% endcomment %}
+
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
+</script>
+<![endif]-->

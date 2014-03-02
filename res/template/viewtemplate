@@ -1,0 +1,434 @@
+{% extends "admin/a_basetemplate.html" %}
+
+{% load static %}
+
+{% block title %}Fuzz Jobs View{% endblock %}
+
+{% block misc_head %}
+	<style type="text/css" title="currentStyle">
+	    @import "{% get_static_prefix %}DataTables/media/css/jquery.dataTables.css";
+	</style>
+	<style type="text/css">
+		#page_header
+		{
+			display:block;
+			font-weight:bold;
+			font-size:30px;
+			margin-bottom:10px;
+		}
+		#msgNotify
+		{
+			display:block;
+			border: 1px dotted Gray;
+			padding: 5px 0px 5px 10px;
+			margin-bottom:10px;
+			font-size:13px;
+		}
+		#btn_add
+		{
+			float:right;
+			font-size:12px;
+			height:28px;
+			font-weight:bold;
+		}
+		#selAction
+		{
+			float:left;
+		}
+		.form-control
+		{
+			font-size:12px;
+		}
+		select.form-control
+		{
+			padding: 5px 5px 5px 5px;
+		}
+		#cview_div
+		{
+			margin: 6px 15px 15px 15px;
+			font-size:12px;
+		}
+		.fil_status select
+		{
+			float:left;
+			font-size:13px;
+			padding:5px 2px 5px 2px;
+			height:28px;
+		}
+		.disablePtr
+		{
+			cursor: default !important;
+		}
+		input[type=checkbox]
+		{
+			-ms-transform: scale(1.2,1.2); /* IE */
+			-moz-transform: scale(1.2,1.2); /* FF */
+			-webkit-transform: scale(1.2,1.2); /* Safari and Chrome */
+			-o-transform: scale(1.2,1.2); /* Opera */
+			padding: 10px;
+		}
+		.tab_data
+		{
+			overflow:auto;
+			width:100%;
+		}
+		table.dataTable tr.odd {
+			background-color: #EDF3FE;
+		}
+		table.dataTable tr.even {
+			background-color: white;
+		}
+		table.dataTable tr.even.row_selected td {
+			background-color: #B0BED9;
+		}
+		table.dataTable tr.odd.row_selected td {
+			background-color: #9FAFD1;
+		}
+		#cview_div th:first-child
+		{
+			padding-right:10px;
+		}
+		#cview_div td:first-child
+		{
+			width:1%;
+			text-align:center;
+		}
+		#cview_div td input[type=checkbox]
+		{
+			margin:0;
+		}
+		.paginate_disabled_previous,
+		.paginate_disabled_next {
+			cursor: default !important;
+		}
+		.ui-dialog-titlebar-close
+		{
+			background-image:url('{% get_static_prefix %}img/closeicon.png');
+			background-repeat:no-repeat;
+			background-position:center;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div style="padding:15px 15px 0px 15px;">
+		<span id="page_header">View Fuzz Job(s)</span>
+		{% if otherVars.msgNote %}
+		<span id="msgNotify" style="color:{% if otherVars.msgSign == "ok" %}Green{% elif otherVars.msgSign == "error" %}Red{% else %}Black{% endif %};background-color:#FCFFB8;">
+			{% if otherVars.msgSign %}<span class='{% if otherVars.msgSign == "ok" %}fa fa-check{% elif otherVars.msgSign == "error" %}fa fa-warning{% endif %}'>&nbsp;&nbsp;</span>{% endif %}{{ otherVars.msgNote }}
+		</span>
+		{% endif %}
+		<a id="btn_add" class="btn btn-info" href="{% url 'fuzzJobAdd' %}">
+	  		<i class="fa fa-plus"></i>&nbsp;&nbsp;Add Fuzz Job
+	  	</a>
+	  	<div id="selAction" style="font-size:12px;">
+	  		<strong>Select action:</strong>
+	  		<select class="form-control" style="width:100px;display:inline-block;padding:2px 5px 2px 5px;height:28px;">
+	  			<option value="clr" selected="selected">-- Clear --</option>
+	  			<option value="edt">Edit</option>
+	  			<option value="del">Delete</option>
+	  		</select>
+	  		<a class="btn btn-info" href="javascript:selectActHandler()" style="font-size:12px;height:28px;font-weight:bold;">
+	  			Go&nbsp;&nbsp;<i class="fa fa-arrow-right"></i>
+	  		</a>
+	  	</div>
+  		<span style="display:block;clear:both;"></span>
+	</div>
+	<div id="cview_div">
+		{% if filterVars %}
+		<span class="fil_status" style="display:inline-block;float:right;margin-top:4px;">
+			<span style="float:left;font-weight:bold;display:inline-block;line-height:28px;">Filter by:&nbsp;</span>
+			{% for sfilter in filterVars %}
+			<select class="form-control" id="id_filt{{ forloop.counter }}" title="{{ sfilter.filterName }}">
+				<option value="{{ sfilter.filterName }}" selected="selected">{{ sfilter.filterName }}</option>
+				{% for option in sfilter.filterList %}
+				<option value="{{ option.1 }}">{{ option.0 }}</option>
+				{% endfor %}
+			</select>
+			{% endfor %}
+		</span>
+		{% endif %}
+		<table id="cview_tab" class="table table-bordered">
+			<thead>
+				<tr style="background-color:#F0F0F0">
+					<th class="disablePtr checkable"><input type="checkbox"></th>
+					<th>ID</th>
+					<th>Job Name</th>
+					<th>Seed File</th>
+					<th>Fuzz Engine</th>
+					<th>Status</th>
+					<th>Total Archives</th>
+					<th>Uniqueness</th>
+					<th>Assigned Phone Group</th>
+					<th>Remarks</th>
+					{% if aaa %}
+					<th class="disablePtr" style="text-align:center;">Actions</th>
+					{% endif %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for record in cronList %}
+				<tr>
+					<td class="checkable"><input type="checkbox" ></td>
+					<td class="record_id">{{ record.id }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					<td>{{ record.value }}</td>
+					{% if aaa %}
+					<td style="text-align:center;">
+						<span title="Edit" class="fa fa-edit" style="cursor:pointer;font-size:14px;" onClick="javascript:window.location.href='{% url 'cronEdit' record.id %}'"></span>
+						&nbsp;&nbsp;
+						<span title="Delete" class="fa fa-trash-o" style="cursor:pointer;font-size:14px;" onClick="delCheck('{% url 'cronDel' record.id %}')"></span>
+					</td>
+					{% endif %}
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<span style="display:block;clear:both;"></span>
+		<div id="dialog-confirm" title="{{ delMsg.0 }}">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+				<span id="selAmt"></span>&nbsp;{{ delMsg.1 }}
+			</p>
+		</div>
+	</div>
+{% endblock %}
+	
+{% block misc_docend %}
+	<script type="text/javascript" charset="utf-8" src="{% get_static_prefix %}DataTables/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function (){
+			// timeout for notification message
+			setTimeout(function() {
+				$('#msgNotify').fadeOut(300, function(){
+					resizeFunc();
+				});
+			},3600);
+			
+			// confirm dialog configuration
+			$("#dialog-confirm").dialog({
+			    modal: true,
+			    bgiframe: true,
+			    width: 500,
+			    height: 200,
+			    autoOpen: false
+			});
+			
+			/*
+			// hotkey for clearing selected rows (Escape button)
+			$(document).keyup(function(e) {
+				if (e.which == 27) { // esc
+					oTable.$('tr.row_selected').removeClass('row_selected');
+					$('.checkable input[type=checkbox]').each(function(){
+						if (this.checked)
+							this.checked = false;
+					});
+					popActSelect();
+				}
+			});
+			*/
+		    
+			{% if filterVars %}
+			// function for custom filtering
+			$.fn.dataTableExt.afnFiltering.push(
+				function( oSettings, aData, iDataIndex ) {
+					var selectVal = $('#id_filt1').val();
+					var tableVal = aData[{{ filterVars.0.filterCol }}] == "-" ? 0 : aData[{{ filterVars.0.filterCol }}];
+					if (selectVal == "{{ filterVars.0.filterList.0.1 }}" || selectVal == "{{ filterVars.0.filterName }}"){
+						return true;
+					}
+					else if ( selectVal == tableVal )
+					{
+						return true;
+					}
+					return false;
+				}
+			);
+			{% endif %}
+			
+			// initiate the table with DataTables plugin
+			var oTable = $('#cview_tab').dataTable({
+				//'bJQueryUI': true,
+				'sDom': '<"top-holder"lfr><"tab_data"t>ip',
+				"bSortCellsTop": true,
+				"aoColumnDefs": [{
+					"bSortable": false,
+					"aTargets": [0]//,13]
+				}],
+				"oLanguage": {
+				    "sEmptyTable": '{{ tabEmptyMsg }}',
+				    "sInfoEmpty": 'No entries to show'
+				},
+			});
+			
+			{% if filterVars %}
+			// update table when selection changed in custom filter
+			$('#id_filt1').on('change', function() {
+				oTable.fnDraw();
+			});
+			{% endif %}
+			
+			// decorate controls that DataTables plugin generate
+			// for length select control
+			$('.dataTables_length select').addClass('form-control').css({'display':'inline-block','padding':'5px 2px 5px 2px','width':'55px','height':'28px'});
+			// for filter input control
+			$('.dataTables_filter input[type="text"]').attr('placeholder','Query Text').addClass('form-control').css({'display':'inline-block','width':'70%','height':'28px'});
+			
+			// update size of table when browser window is resized
+			var update_size = function() {
+			    $(oTable).css({ width: $(oTable).parent().width()});
+			    oTable.fnAdjustColumnSizing();  
+		  	}
+			$(window).resize(function() {
+				clearTimeout(window.refresh_size);
+				window.refresh_size = setTimeout(function() { update_size(); }, 250);
+			});
+			
+			// update the checkboxes on table page change
+			oTable.on('page', function(e, o) {
+		        setTimeout(function() {
+			        popActSelect();
+			        checkAllSel();
+			        resizeFunc();
+				},10);
+		    });
+			
+			{% if filterVars %}
+			// add custom filter to the same div as filter input
+			$('.top-holder').append($('.fil_status'));
+			{% endif %}
+		});
+		
+		// function for enabling checkbox parent for selection (selecting/deselecting parent does the same to checkbox)
+		$('.checkable').click(function(){
+			var checkbox = $(this).find('input[type=checkbox]');
+			var checkStatus = !checkbox.prop('checked');
+			checkbox.prop('checked', checkStatus)
+			if ($(this).is('td')){
+	    		rowSelected(checkbox.closest('tr'), checkStatus);
+	    		checkAllSel();
+			}
+			else
+				toggleChecked(checkStatus);
+		});
+		// function to stop checkbox to propagate check event (stops error of checkbox not being selected when user clicks on checkbox instead of parent)
+		$('.checkable input[type=checkbox]').click(function(e){
+			if ($(this).parent().is('td')){
+				rowSelected($(this).closest('tr'), this.checked);
+				checkAllSel();
+			}
+			else
+				toggleChecked(this.checked);
+			e.stopPropagation();
+		});
+		
+		// check/uncheck all checkboxes
+		function toggleChecked(checkAll){
+			$('td.checkable input[type=checkbox]').each(function() {
+				if (checkAll && !this.checked){
+					this.checked = true;
+					rowSelected($(this).closest('tr'), this.checked);
+				}
+				else if (!checkAll && this.checked){
+					this.checked = false;
+					rowSelected($(this).closest('tr'), this.checked);
+				}
+			});
+		}
+		
+		// function for highlighting selected row
+		function rowSelected(element,isSelected){
+			if (isSelected)
+				element.addClass('row_selected');
+			else
+				element.removeClass('row_selected');
+			popActSelect();
+		}
+		
+		// function to populate dropdownlist for selected rows accordingly
+		function popActSelect(){
+			var numItems = $('.row_selected').length;
+			var selActEle = $('#selAction').children('select');
+			selActEle.prop('selectedIndex',0).children('option[value="edt"]').css('display','block');
+			if (numItems > 1)
+				selActEle.children('option[value="edt"]').css('display','none');
+		}
+		
+		// function to check if all checkboxes (tbody) are selected, and check/uncheck the header checkbox accordingly
+		function checkAllSel(){
+			var total=0,checked=0;
+			$('td.checkable input[type=checkbox]').each(function(){
+	        	total += 1;
+	        	if (this.checked)
+	        		checked += 1;
+	        });
+	        if (checked == total)
+	        	$('th.checkable input[type=checkbox]').prop('checked',true);
+	        else
+	        	$('th.checkable input[type=checkbox]').prop('checked',false);
+		}
+		
+		// function to handle actions that user selected (for highlighted rows)
+		function selectActHandler(){
+			if ($('.row_selected').length > 0){
+				var selected = $('#selAction select').val();
+				switch (selected){
+					case "clr":
+						$('table.dataTable tr.row_selected').removeClass('row_selected');
+						$('.checkable input[type=checkbox]').each(function(){
+							if (this.checked)
+								this.checked = false;
+						});
+						popActSelect();
+						break;
+					case "edt":
+						if ($('.row_selected').length == 1)
+							window.location.href = "{% url 'cronEditUrl' %}" + $('.row_selected').children('td.record_id').text();
+						break;
+					case "del":
+						var numChecked = 0;
+						$('td.checkable input[type=checkbox]:checked').each(function(){
+							numChecked += 1;
+						});
+						$('#selAmt').text(numChecked);
+						$("#dialog-confirm").dialog('option', 'buttons', {
+					      	"Confirm": function () {
+					      		var selectedIDs = "";
+					        	$('.row_selected').each(function (){
+					        		selectedIDs += $(this).children('td.record_id').text()+";";
+					        	});
+					        	selectedIDs = selectedIDs.slice(0,-1);
+					        	window.location.href = "{% url 'cronDelUrl' %}"+selectedIDs;
+					      	},
+					      	"Cancel": function () {
+					        	$(this).dialog("close");
+					      	}
+					    });
+					    $("#dialog-confirm").dialog("open");
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		
+		// function to show confirmation dialog when user tries to delete a record
+		function delCheck(url){
+		    $("#dialog-confirm").dialog('option', 'buttons', {
+		      	"Confirm": function () {
+		        	window.location.href = url;
+		      	},
+		      	"Cancel": function () {
+		        	$(this).dialog("close");
+		      	}
+		    });
+		    $("#dialog-confirm").dialog("open");
+		}
+	</script>
+{% endblock %}

@@ -1,0 +1,5 @@
+{
+"navBar":
+	[{"name":"Homepage",	###name of navbar entry
+		"url":"index"}]
+}

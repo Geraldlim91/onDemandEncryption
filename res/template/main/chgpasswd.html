@@ -1,0 +1,239 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+    Change Password
+{% endblock %}
+
+{% block misc_head %}
+	<style type="text/css">
+		#page_header
+		{
+			display:block;
+			font-weight:bold;
+			font-size:22px;
+			margin-bottom:10px;
+		}
+		input[type=checkbox]
+		{
+			-ms-transform: scale(1.2,1.2); /* IE */
+			-moz-transform: scale(1.2,1.2); /* FF */
+			-webkit-transform: scale(1.2,1.2); /* Safari and Chrome */
+			-o-transform: scale(1.2,1.2); /* Opera */
+			padding: 10px;
+		}
+		.form-group .control-label
+		{
+			text-align:left;
+		}
+		@media (max-width: 767px)
+		{
+			.form-group .control-label
+			{
+				margin-bottom:5px;
+			}
+		}
+        #msgNotify
+        {
+            display:block;
+            border: 1px dotted Gray;
+            padding: 5px 0px 5px 10px;
+            margin-bottom:10px;
+            font-size:13px;
+            background-color:#FCFFB8;
+        }
+        .group_header
+        {
+            background: #eeeeee; /* Old browsers */
+            background: -moz-linear-gradient(top,  #eeeeee 0%, #85b2d3 67%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(67%,#85b2d3)); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  #eeeeee 0%,#85b2d3 67%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  #eeeeee 0%,#85b2d3 67%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  #eeeeee 0%,#85b2d3 67%); /* IE10+ */
+            background: linear-gradient(to bottom,  #eeeeee 0%,#85b2d3 67%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#85b2d3',GradientType=0 ); /* IE6-9 */
+
+            color:#000000;
+            padding: 5px 0px 5px 15px;
+            font-weight:bold;
+        }
+		.form_groups
+		{
+			margin-bottom:15px;
+			border:1px dotted Black;
+		}
+		.group_body
+		{
+		}
+		.form-horizontal .form-group
+		{
+			margin:15px 0px 15px 0px;
+		}
+		.group_body .control-label
+		{
+			max-width:160px;
+		}
+		.form-horizontal hr
+		{
+			border-bottom:1px dashed #EEEEEE;
+			margin:0;
+		}
+		.helptext
+		{
+			display:block;
+			clear:both;
+			padding:10px 0px 0px 15px;
+			color:#9999A5;
+		}
+		#cancel_btn
+		{
+			margin-left:10px;
+		}
+		.errorcss
+		{
+			display:block;
+			clear:both;
+			padding:15px 0px 0px 15px;
+			color:#9999A5;
+		}
+		.errorcss > ul
+		{
+			list-style-type: none;
+			margin:0;
+			padding:0;
+		}
+		.errorcss > ul > li
+		{
+			color:Red;
+		}
+		.form_groups, .form_groups .form-control
+		{
+			font-size:12px;
+		}
+		.form_groups select.form-control
+		{
+			padding: 5px;
+		}
+		{% if otherVars.profUpdate %}
+		#cview_tab
+		{
+			margin-bottom: 0;
+		}
+		#cview_tab th
+		{
+			text-align:center;
+		}
+		#cview_tab td.center
+		{
+			text-align:center;
+		}
+		#cview_tab td img:hover
+		{
+			height:105%;
+		}
+		{% endif %}
+	</style>
+{% endblock %}
+
+{% block content %}
+      <div class="container">
+        <div style="padding:0px 15px 15px 15px;">
+		<span id="page_header">
+		    Change User Password
+		</span>
+		{% if otherVars.msgNote %}
+        <span id="msgNotify">
+            {{ otherVars.msgNote|safe }}
+        </span>
+        {% endif %}
+		<form enctype="multipart/form-data" action="" method="post">
+			{% csrf_token %}
+			{% for groupH in hgrps %}
+			<div class="form_groups">
+				<div class="group_header">
+					{{ groupH.name }}
+				</div>
+				<div class="group_body">
+					<div class="form-horizontal">
+						{% with counternum=forloop.counter0 %}
+						{% for formItem in form1 %}
+						{% if formItem.field.widget.attrs.hgrp == counternum|lower %}
+
+						<div class="form-group">
+							<label class="col-sm-3 control-label" for="id_{{ formItem.name }}" style="max-width:{{ groupH.lblwidth }}px">{{ formItem.label }}:</label>
+							<div class="col-sm-10" style="max-width:{{ formItem.field.widget.attrs.wsize|default:'' }}px;">
+								{% with fClass=formItem.field.widget cbClass="cb_"|add:formItem.name %}
+								{% if "CheckboxInput" in fClass or "RadioSelect" in fClass  %}
+								{{ formItem }}
+								{% elif "CheckboxSelectMultiple" in fClass %}
+								<label for="all_{{ formItem.name }}"><input id="all_{{ formItem.name }}" class="toggleCAll" type="checkbox" > Check/Uncheck All</label>
+								<div style="margin-left:20px;">
+									{{ formItem|add_class:cbClass }}
+								</div>
+								{% else %}
+								{{ formItem|add_class:"form-control" }}
+								{% endif %}
+								{% endwith %}
+							</div>
+							{% if formItem.help_text %}
+							<span class="helptext">{{ formItem.help_text|safe }}</span>
+							{% endif %}
+							{% if formItem.errors %}
+							<span class="errorcss">
+								<ul>
+							    	{% for error in formItem.errors %}
+							        <li>
+							        	<span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+										<strong>{{ error|escape }}</strong>
+							        </li>
+							    	{% endfor %}
+							    </ul>
+							</span>
+							{% endif %}
+						</div>
+						{% endif %}
+						{% endfor %}
+						{% endwith %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+			{{ form1.non_field_errors }}
+			<input class="btn btn-info submit_btn" type="submit" value="Submit" name="_submit" />
+			<input id="cancel_btn" class="btn btn-info" type="button" value="Cancel" onClick="javascript:window.location.href='{% url 'fileView' %}'" />
+		</form>
+	    </div>
+    </div>
+{% endblock %}
+
+{% block misc_docend %}
+	<script type="text/javascript">
+		function extensionCheck(element){
+			var control = $(element);
+			var ext = control.val().split('.').pop().toLowerCase();
+			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+				control.wrap('<form>').closest('form').get(0).reset();
+				control.unwrap();
+			    //control.replaceWith(control = control.clone(true));
+			    alert('Invalid extension!');
+			}
+		}
+	
+		$(document).ready(function(){
+		    // timeout for notification message
+            setTimeout(function() {
+                $('#msgNotify').fadeOut(300, function(){
+                    resizeFunc();
+                });
+            },4500);
+            
+			if ($('#id_avatar_img').length){
+				$('#id_avatar_img').change(function(){
+					extensionCheck(this);
+				})
+			}
+		});
+	</script>
+{% endblock %}

@@ -1,0 +1,258 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block misc_head %}
+	<style type="text/css">
+		.errorcss {
+			list-style-type: none;
+			margin:0;
+			padding:0;
+		}
+		.errorcss > li {
+			color:Red;
+		}
+		
+		.nav.nav-tabs a {
+			outline:none;
+		}
+		.tab-pane {
+			border-width:0px 1px 1px 1px;
+			border-style:solid;
+			border-color:#dddddd;
+			padding-top:15px;
+		}
+		.tab_holder {
+			max-width:400px;
+            line-height: 25px;
+			margin: 0 auto;
+		}
+		@media (max-width: 767px) {
+			.control-label {
+				padding-bottom:5px;
+			}
+			.captchaCont {
+				margin: 0px 15px 0px 15px;
+			}
+		}
+		.captchaWrapper {
+			
+		}
+		.captchaCont {
+			border: 1px solid Black;
+			width: 232px;
+			border-radius:10px;
+		}
+		.captchaWrapper img {
+			display: block;
+			width:200px;
+			margin: 15px 15px 5px 15px;
+			border: 1px solid Black;
+		}
+		.captchaWrapper input[type=text] {
+			width:150px;
+			margin: 0px 2px 15px 15px;
+			display:inline-block;
+		}
+		#captcha_refresh {
+			display:inline-block;
+			font-size:23px;
+			border:1px solid #357ebd;
+			background-color:#428bca;
+			line-height:32px;
+			vertical-align:top;
+			width:44px;
+			text-align:center;
+			cursor:pointer;
+			border-radius:5px;
+			color:#ffffff;
+		}
+		#captcha_refresh:hover {
+			border:1px solid #285e8e;
+			background-color:#3276b1;
+			color:#ffffff;
+		}
+		.nav.nav-tabs {
+			min-width:265px;
+            font-size: 18px;
+		}
+		.tab-content {
+            min-width:256px;
+            font-size: 15px;
+		}
+		.navbar.navbar-static-top.navbar-inverse {
+			min-width:295px;
+		}
+		.container.holder {
+			min-width:295px;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div style="margin-top:100px; margin-bottom:20px;">
+		<div class="container holder">
+			<div class="tab_holder">
+				<ul class="nav nav-tabs">
+					<li{% if otherVars.loginActive %} class="active"{% endif %}><a data-toggle="tab" href="#login_tab">Login</a></li> <!--Login Tab-->
+					<li{% if not otherVars.loginActive %} class="active"{% endif %}><a data-toggle="tab" href="#reset_tab">Lost Password</a></li> <!--Lost PW Tab-->
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane{% if otherVars.loginActive %} active{% endif %}" id="login_tab">
+						<div class="container">
+							<form class="form-horizontal" role="form" action="" method="post">
+								{% csrf_token %}
+                            <br>
+								<div class="form-group">
+									<label for="id_email" class="col-sm-offset-0 col-sm-3 control-label">Email:</label>
+									<div class="col-sm-7">
+										<input type="text" id="id_email" name="email" class="form-control" value="{{ formLogin.email.value|default_if_none:'' }}" placeholder="Email">
+									</div>
+								</div>
+								{% if formLogin.email.errors %}
+								<div class="form-group">
+									<div class="col-sm-offset-4 col-sm-7">
+										<ul class="errorcss">
+									    	{% for error in formLogin.email.errors %}
+									        <li>
+									        	<span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+												<strong>{{ error|escape }}</strong>
+									        </li>
+									    	{% endfor %}
+									    </ul>
+									</div>
+								</div>
+								{% endif %}
+								<div class="form-group">
+									<label for="id_password" class="col-sm-offset-0 col-sm-3 control-label">Password:</label>
+									<div class="col-sm-7">
+										<input type="password" id="id_password" name="password" class="form-control" placeholder="Password">
+									</div>
+								</div>
+								{% if formLogin.password.errors %}
+								<div class="form-group">
+									<div class="col-sm-offset-4 col-sm-7">
+										<ul class="errorcss">
+									    	{% for error in formLogin.password.errors %}
+									        <li>
+									        	<span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+												<strong>{{ error|escape }}</strong>
+									        </li>
+									    	{% endfor %}
+									    </ul>
+									</div>
+								</div>
+								{% endif %}
+                            <br>
+								<div class="form-group">
+									<div class="col-sm-offset-4 col-sm-7">
+										<div class="checkbox">
+											<label>
+												<span style="vertical-align:2px;"><input type="checkbox" name="rememberuser"{% if formLogin.rememberuser.value %} checked{% endif %}></span> Remember me
+											</label>
+										</div>
+									</div>
+								</div>
+								{% if formLogin.non_field_errors %}
+								<div class="form-group" style="margin-bottom:15px;">
+									<div class="col-sm-offset-4 col-sm-8">
+										<ul class="errorcss">
+									    	{% for error in formLogin.non_field_errors %}
+									        <li>
+									        	<span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+												<strong>{{ error|escape }}</strong>
+									        </li>
+									    	{% endfor %}
+									    </ul>
+									</div>
+								</div>
+								{% endif %}
+								<div class="form-group">
+									<div class="col-sm-offset-4 col-sm-3">
+										<input class="btn btn-primary" type="submit" value="Login" name="_login" />
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="tab-pane{% if not otherVars.loginActive %} active{% endif %}" id="reset_tab">
+						<div class="container">
+							<form class="form-horizontal" role="form" action="" method="post">
+								{% csrf_token %}
+								{{ formReset.non_field_errors }}
+								
+							    <div class="form-group">
+									<label for="id_email" class="col-sm-3 control-label">Email:</label>
+									<div class="col-sm-8">
+										<input type="text" id="id_email" name="email" class="form-control" value="{{ formReset.email.value|default_if_none:'' }}" placeholder="Email">
+									</div>
+								</div>
+								{% if formReset.email.errors %}
+								<div class="form-group">
+									<div class="col-sm-offset-4 col-sm-7">
+										<ul class="errorcss">
+									    	{% for error in formReset.email.errors %}
+									        <li>
+									        	<span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+												<strong>{{ error|escape }}</strong>
+									        </li>
+									    	{% endfor %}
+									    </ul>
+									</div>
+								</div>
+								{% endif %}
+								{% if emailInvalid %}
+								<div class="form-group">
+									<span class="col-sm-offset-3 col-sm-8" style="color:Red;">
+							        	<span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+							        	<strong>Invalid Email</strong>
+							       	</span>
+								</div>
+								{% endif %}
+								<div class="form-group">
+									<div class="col-sm-offset-4 col-sm-3">
+										<input class="btn btn-primary" type="submit" value="Reset Password" name="_reset" />
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+	
+{% block misc_docend %}
+	<script type="text/javascript">
+		/*
+		var min_width = 0;
+		$('.nav.nav-tabs').children('li').each(function(){
+			min_width += $(this).width();
+		});
+		$('.nav.nav-tabs').css('min-width', min_width+'px');
+		$('.tab-content').css('min-width', min_width+'px');
+		*/
+		
+		$('#captcha_refresh').click(function(){
+			$.ajax({
+	            type:"GET",
+	            url :"/captcha/captcha_refresh",
+	            data:"{}",
+	            dataType:"json",
+	            cache: false,
+	            success:function(json){
+	            	$('.captcha').attr('src', json.image_url);
+					$('#id_captcha_0').val(json.key);
+					$('#id_captcha_1').val('');
+	    		}
+			});
+		});
+		
+		//$('.captchaWrapper').children('img').wrap("<div class='col-sm-offset-1 col-sm-5'></div>");
+		//$('.captchaWrapper').children('input:text').addClass('form-control').attr('placeholder','Captcha').wrap("<div class='col-sm-4'></div>");
+		$('.captchaWrapper').find('input:text').addClass('form-control').attr('placeholder','Captcha');
+	</script>
+{% endblock %}

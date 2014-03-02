@@ -1,0 +1,45 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{% block title %}{% trans 'Page not found' %}{% endblock %}</title>
+	<style type="text/css">
+		#headerCont .navbar
+		{
+			margin-bottom:0px;
+			width:100% !important;
+		}
+		
+		    p
+		    {
+			display:block;
+			font-weight:bold;
+			font-size:20px;
+			margin-bottom:10px;
+		    }
+		    h2
+		    {
+			display:block;
+			font-weight:bold;
+			font-size:30px;
+			margin-bottom:10px;
+		    }
+		    a
+		    {
+			display:block;
+			font-weight:bold;
+			font-size:20px;
+			margin-bottom:10px;
+		    }
+	</style>
+</head>
+<body>
+<div style="padding:15px 15px 0px 15px;">
+	<h2 style=>{% trans 'Page not found' %}</h2>
+	<p>{% trans "We're sorry, but the requested page could not be found." %}</p>
+	<a class="navbar-brand" href="{% url 'a_index' %}">{% trans "Click here to go back to STAMP Administrative Interface" %}</a>
+</div>
+
+</body>

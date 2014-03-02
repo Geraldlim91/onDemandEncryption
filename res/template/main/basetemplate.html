@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{#	<link rel="shortcut-icon" href="{% static 'img/favicon.ico' %}">#}
+    <link rel="icon" href="{{ STATIC_URL }}img/favicon.ico" />
+    <title>{% block title %}onDemand Network Encryption{% endblock %}</title>
+	
+	<!-- Bootstrap -->
+	<!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+	<!-- <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet"> -->
+	
+	<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'font-awesome-4.0.3/css/font-awesome.min.css' %}" rel="stylesheet">
+	<link href="{% static 'jquery-ui-1.10.3/themes/base/jquery-ui.css' %}" rel="stylesheet">
+	
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	      <script src="{% static 'js/html5shiv.js' %}"></script>
+	      <script src="{% static 'js/respond.min.js' %}"></script>
+	<![endif]-->
+	
+	<style type="text/css">
+		/*
+		 * Style twaks
+		 * --------------------------------------------------
+		 
+		body {
+			padding-top: 70px;
+		}
+		*/
+
+{#        .navbar-inner {#}
+{#            background-color: red;#}
+{#            background-image: linear-gradient(to bottom, orange, white);#}
+{#            background-repeat: repeat-x;#}
+{#            border: 1px solid yellow;#}
+{#            border-radius: 4px 4px 4px 4px;#}
+{#            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);#}
+{#            min-height: 40px;#}
+{#            padding-left: 20px;#}
+{#            padding-right: 20px;#}
+{#        }#}
+
+		html,body
+		{
+			height:100%;
+		}
+		
+		#overallholder
+		{
+			min-height: 100%;
+			position: relative;
+		}
+		#footer {
+			position: absolute;
+			bottom: 0px;
+			left: 0px;
+			right: 0px;
+			padding-left: 15px;
+			padding-right: 15px;
+			height: 50px;
+		}
+		.navbar-brand
+		{
+			margin-left:10px !important;
+		}
+		.navbar-toggle
+		{
+			padding:7px 8px 5px 8px;
+		}
+		#navbar_collapse_ul
+		{
+			margin-top:0px;
+			margin-bottom:0px;
+		}
+		#navbar_collapse_div.in #navbar_collapse_ul > li, #navbar_collapse_div.collapsing #navbar_collapse_ul > li
+		{
+			border-bottom:1px solid #999797;
+		}
+		.navbar-inverse .navbar-nav>.open>a:hover,
+		.navbar-inverse .navbar-nav>.open>a:focus
+		{
+			background-color:rgba(255,255,255,0.7) !important;
+		}
+		.navbar-inverse .navbar-nav>li>a:hover,
+		.navbar-inverse .navbar-nav>li>a:focus
+		{
+			background-color:rgba(255,255,255,0.7) !important;
+		}
+
+        #navbar_gradient{
+            background: #b5bdc8; /* Old browsers */
+            background: -moz-linear-gradient(top,  #b5bdc8 0%, #fcffe0 100%, #28343b 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b5bdc8), color-stop(100%,#fcffe0), color-stop(100%,#28343b)); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  #b5bdc8 0%,#fcffe0 100%,#28343b 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  #b5bdc8 0%,#fcffe0 100%,#28343b 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  #b5bdc8 0%,#fcffe0 100%,#28343b 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  #b5bdc8 0%,#fcffe0 100%,#28343b 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b5bdc8', endColorstr='#28343b',GradientType=0 ); /* IE6-9 */
+
+        }
+	</style>
+
+<!-- Change the colour of links -->
+{#<style>#}
+{#        a:link {color:#000000;}    /* unvisited link */#}
+{#        a:visited {color:#0739B9;} /* visited link */#}
+{#        a:hover {color:#EF2828;}   /* mouse over link */#}
+{#        a:active {color:#FFFFFF;}  /* selected link */#}
+{#</style>#}
+
+	{% block misc_head %}{% endblock %}
+</head>
+<body>
+	<div id="overallholder">
+		<br/>
+		<div class="container">
+			<img src="{% static 'img/logo.jpg' %}" height="100"/> <!-- <span class="img-thumbnail"><span style="display:inline-block;width:300px;height:100px;background-color:#EEEEEE;line-height:100px;text-align:center;color:Gray;font-size:25px;">Logo Here</span></span> -->
+{#			<span style="display:inline-block;" class="pull-right"><a href="{% url 'login' %}">Login</a> | <a href="javascript:void(0)">Contact</a></span>#}
+		</div>
+		<br/>
+		<div class="navbar navbar-static-top navbar-inverse" role="navigation" style="background: #eeeeee; /* Old browsers */
+        background: -moz-linear-gradient(top,  #eeeeee 0%, #cccccc 67%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#eeeeee), color-stop(67%,#cccccc)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  #eeeeee 0%,#cccccc 67%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  #eeeeee 0%,#cccccc 67%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  #eeeeee 0%,#cccccc 67%); /* IE10+ */
+        background: linear-gradient(to bottom,  #eeeeee 0%,#cccccc 67%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#cccccc',GradientType=0 ); /* IE6-9 */">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-collapse">
+						<span class="fa fa-align-justify" style="color: black; font-size: 20px; text-align: center;"></span>
+						<!-- <span class="icon-bar" style="background-color: black"></span>
+						<span class="icon-bar" style="background-color: black"></span>
+						<span class="icon-bar" style="background-color: black"></span> -->
+					</button>
+                    {% if not otherVars.pageType or otherVars.pageType == "logon" %}
+					<a class="navbar-brand" href="/main/file/" style="color: black; font-size: 18px; font-weight: bold ">Home</a>
+                    {% endif %}
+				</div>
+                 <!-- collection of nav links -->
+                <div id="navbar_collapse_div" class="collapse navbar-collapse navbar-inner">
+                    <ul id="navbar_collapse_ul" class="nav navbar-nav navbar-right">
+                         {% if not otherVars.pageType or otherVars.pageType == "login" %}
+                            <li class="divider-vertical"><a href="/main/register/" style="color: #000000; font-size: 18px;">Register</a></li>
+						{% endif %}
+						{% if not otherVars.pageType or otherVars.pageType == "register" %}
+                            <li class="divider-vertical"><a href="/main/login/" style="color: #000000; font-size: 18px;">Login</a></li>
+						{% endif %}
+                        {% if not otherVars.pageType or otherVars.pageType == "logon" %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color: black; font-size:18px;">
+                                    Welcome ,{{ otherVars.UserInfo }}
+                                    <b class="fa fa-caret-square-o-down"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/main/logout/" style="color: #000000; font-size: 12px; text-align: right;">Logout</a></li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                    </ul>
+				</div>
+				<!-- /.nav-collapse -->
+			</div>
+			<!-- /.container -->
+		</div>
+		<!-- /.navbar -->
+		
+		{% block content %}{% endblock %}
+		
+		<!-- <div id="updatedContents">Contents here</div> -->
+		
+		<div class="modal fade" id="infoDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">{{ showMsg.title }}</h4>
+					</div>
+					<div class="modal-body">
+						<p>{{ showMsg.body }}</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+		<span style="display:block;height:50px;width:1px;"></span>
+		<footer id="footer">
+			<p>&copy; onDemand Network Encryption</p>
+		</footer>
+	</div>
+
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="{% static 'jquery/jquery-1.10.2.js' %}"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> -->
+	<script src="{% static 'jquery-ui-1.10.3/ui/jquery-ui.js' %}"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	
+	<script type="text/javascript">
+		if (!String.prototype.trim) {
+			String.prototype.trim = function() {
+				return this.replace(/^\s+|\s+$/g,'');
+			}
+		}
+	
+		$('#infoDialog').on('show', function () {
+		    $(this).find('.modal-body').css({width:'auto',
+		                               height:'auto', 
+		                              'max-height':'500px',
+		                              'overflow-y':'auto'});
+		});
+		
+		// set the navbar to be the same width as document width
+		//$('.navbar').css('min-width',$(document).width()+'px');
+
+		{% if showMsg %}
+			$('#infoDialog').modal('show');
+		{% endif %}
+		
+		$(document).ready(function() {
+			function getCookie(name) {
+			    var cookieValue = null;
+			    if (document.cookie && document.cookie != '') {
+			        var cookies = document.cookie.split(';');
+			        for (var i = 0; i < cookies.length; i++) {
+			            var cookie = jQuery.trim(cookies[i]);
+			            // Does this cookie string begin with the name we want?
+			            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+			                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+			                break;
+			            }
+			        }
+			    }
+			    return cookieValue;
+			}
+
+			
+			var csrftoken = getCookie('csrftoken');
+			
+			function csrfSafeMethod(method) {
+			    // these HTTP methods do not require CSRF protection
+			    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+			}
+			
+			$.ajaxSetup({
+			    crossDomain: false, // obviates need for sameOrigin test
+			    beforeSend: function(xhr, settings) {
+			        if (!csrfSafeMethod(settings.type)) {
+			            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			        }
+			    }
+			});
+		
+			var timeStr = "";
+		});
+
+	</script>
+	
+	{% block misc_docend %}{% endblock %}
+</body>
+</html>

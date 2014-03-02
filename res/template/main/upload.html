@@ -1,0 +1,118 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+{% load jfutags %}
+
+{% block title %}
+    Upload Files
+{% endblock %}
+
+{% block misc_head %}
+	{% jfu_css %}
+    <style type="text/css">
+    	body,html
+        {
+            min-width:500px;
+        }
+        #page_header
+        {
+            display:block;
+            font-weight:bold;
+            font-size:30px;
+            margin-bottom:10px;
+        }
+        .ui-dialog { z-index: 1000 !important ;}
+    </style>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+	    <div id="whole_cont" style="padding:15px 0px 15px 15px;">
+	        <span id="page_header">
+	            Upload Files
+	        </span>
+	        {% jfu_html %}
+	        <form action="" id="pageform" method="post">
+	            {% csrf_token %}
+	        	<input class="btn btn-info" type="button" value="Finish uploading" onclick="javascript:window.location.href='{% url 'fileView' %}'" />
+	        </form>
+	    </div>
+	    <!-- <input id="testbutton" type="button" value="wee" /> -->
+    </div>
+    <!-- <div id="dialog-form" title="Create new user">
+		<p class="validateTips">
+			All form fields are required.
+		</p>
+		<form>
+			<fieldset>
+				<label for="name">Name</label>
+				<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+				<label for="email">Email</label>
+				<input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+			</fieldset>
+		</form>
+	</div> -->
+{% endblock %}
+    
+{% block misc_docend %}
+	{% jfu_js %}
+	<script type="text/javascript">
+		$('#fileupload').bind('fileuploadsubmit', function (e, data) {
+		    var inputs = data.context.find(':input');
+		    if (inputs.filter('.encryptKey').focus().val().length == 0) {
+		    	data.context.find('.error.text-danger').html('Enter encryption key!');
+		    	inputs.filter('.start').prop('disabled', false);
+		        return false;
+		    }
+		    data.formData = inputs.serializeArray();
+		});
+	
+		// $( "#dialog-form" ).dialog({
+      		// autoOpen: false,
+			// height: 300,
+			// width: 350,
+			// modal: true,
+			// buttons: {
+				// "Create an account": function() {
+// 					
+				// },
+				// Cancel: function() {
+					// $( this ).dialog( "close" );
+				// }
+			// },
+			// close: function() {
+// 				
+			// }
+		// });
+// 		
+		// $( "#testbutton").click(function() {
+        	// $( "#dialog-form" ).dialog( "open" );
+  		// });
+  		
+  		$(document).ready(function(){
+	    });
+		// var resizeTimerVar;
+		// $(document).ready(function(){
+			// $('#fileupload')
+				// .bind('fileuploadchange', function (e, data){
+		        	// clearTimeout(resizeTimerVar);
+		        	// resizeTimerVar = setTimeout(resizeFunc, 100);
+		        // })
+	        	// .bind('fileuploadfail', function (e, data){
+		        	// clearTimeout(resizeTimerVar);
+		        	// resizeTimerVar = setTimeout(resizeFunc, 800);
+		        // })
+	        	// .bind('fileuploadalways', function (e, data){
+		        	// clearTimeout(resizeTimerVar);
+		        	// resizeTimerVar = setTimeout(resizeFunc, 800);
+		        // })
+		        // .bind('fileuploaddestroy', function (e, data){
+		        	// clearTimeout(resizeTimerVar);
+		        	// resizeTimerVar = setTimeout(resizeFunc, 800);
+		        // });
+		// });
+	</script>
+{% endblock %}

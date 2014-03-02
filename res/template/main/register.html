@@ -1,0 +1,217 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+	Registration
+{% endblock %}
+
+{% block misc_head %}
+	<style type="text/css">
+		#page_header
+		{
+			display:block;
+			font-weight:bold;
+			font-size:22px;
+			margin-bottom:10px;
+		}
+		input[type=checkbox]
+		{
+			-ms-transform: scale(1.2,1.2); /* IE */
+			-moz-transform: scale(1.2,1.2); /* FF */
+			-webkit-transform: scale(1.2,1.2); /* Safari and Chrome */
+			-o-transform: scale(1.2,1.2); /* Opera */
+			padding: 10px;
+		}
+		.form-group .control-label
+		{
+			text-align:left;
+		}
+		@media (max-width: 767px)
+		{
+			.form-group .control-label
+			{
+				margin-bottom:5px;
+			}
+		}
+		.group_header
+		{
+			background: rgb(122,188,255); /* Old browsers */
+			/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+			background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzdhYmNmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjQ0JSIgc3RvcC1jb2xvcj0iIzYwYWJmOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM0MDk2ZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+			background: -moz-linear-gradient(top,  rgb(122,188,255) 0%, rgb(96,171,248) 44%, rgb(64,150,238) 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(122,188,255)), color-stop(44%,rgb(96,171,248)), color-stop(100%,rgb(64,150,238))); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top,  rgb(122,188,255) 0%,rgb(96,171,248) 44%,rgb(64,150,238) 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top,  rgb(122,188,255) 0%,rgb(96,171,248) 44%,rgb(64,150,238) 100%); /* Opera 11.10+ */
+			background: -ms-linear-gradient(top,  rgb(122,188,255) 0%,rgb(96,171,248) 44%,rgb(64,150,238) 100%); /* IE10+ */
+			background: linear-gradient(to bottom,  rgb(122,188,255) 0%,rgb(96,171,248) 44%,rgb(64,150,238) 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 ); /* IE6-8 */
+			color:White;
+			padding: 5px 0px 5px 15px;
+			font-weight:bold;
+		}
+		.form_groups
+		{
+			margin-bottom:15px;
+			border:1px dotted Black;
+		}
+		.group_body
+		{
+		}
+		.form-horizontal .form-group
+		{
+			margin:15px 0px 15px 0px;
+		}
+		.group_body .control-label
+		{
+			max-width:160px;
+		}
+		.form-horizontal hr
+		{
+			border-bottom:1px dashed #EEEEEE;
+			margin:0;
+		}
+		.helptext
+		{
+			display:block;
+			clear:both;
+			padding:10px 0px 0px 15px;
+			color:#9999A5;
+		}
+		#cancel_btn
+		{
+			margin-left:10px;
+		}
+		.errorcss
+		{
+			display:block;
+			clear:both;
+			padding:15px 0px 0px 15px;
+			color:#9999A5;
+		}
+		.errorcss > ul
+		{
+			list-style-type: none;
+			margin:0;
+			padding:0;
+		}
+		.errorcss > ul > li
+		{
+			color:Red;
+		}
+		.form_groups, .form_groups .form-control
+		{
+			font-size:12px;
+		}
+		.form_groups select.form-control
+		{
+			padding: 5px;
+		}
+		{% if otherVars.profUpdate %}
+		#cview_tab
+		{
+			margin-bottom: 0;
+		}
+		#cview_tab th
+		{
+			text-align:center;
+		}
+		#cview_tab td.center
+		{
+			text-align:center;
+		}
+		#cview_tab td img:hover
+		{
+			height:105%;
+		}
+		{% endif %}
+	</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div style="padding:0px 15px 15px 15px;">
+            <span id="page_header">
+            Register
+            </span>
+            <form enctype="multipart/form-data" action="" method="post">
+                {% csrf_token %}
+                {% for groupH in hgrps %}
+                    <div class="form_groups">
+                        <div class="group_header">
+                            {{ groupH.name }}
+                        </div>
+                        <div class="group_body">
+                            <div class="form-horizontal">
+                                {% with counternum=forloop.counter0 %}
+                                    {% for formItem in regForm %}
+                                        {% if formItem.field.widget.attrs.hgrp == counternum|lower %}
+
+                                            <div class="form-group">
+                                                <label class="col-sm-3 control-label" for="id_{{ formItem.name }}" style="max-width:{{ groupH.lblwidth }}px">{{ formItem.label|safe }}:</label>
+                                                <div class="col-sm-10" style="max-width:{{ formItem.field.widget.attrs.wsize|default:'' }}px;">
+                                                    {% if "CheckboxInput" in formItem.field.widget or "RadioSelect" in formItem.field.widget %}
+                                                        {{ formItem }}
+                                                    {% else %}
+                                                        {{ formItem|add_class:"form-control" }}
+                                                    {% endif %}
+                                                </div>
+                                                {% if formItem.help_text %}
+                                                    <span class="helptext">{{ formItem.help_text|safe }}</span>
+                                                {% endif %}
+                                                {% if formItem.errors %}
+                                                    <span class="errorcss">
+                                                        <ul>
+                                                            {% for error in formItem.errors %}
+                                                                <li>
+                                                                    <span class="glyphicon glyphicon-chevron-right" style="font-size:10px;vertical-align:2px;"></span>
+                                                                    <strong>{{ error|escape }}</strong>
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </span>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endwith %}
+
+                            </div>
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+
+                {{ regForm.non_field_errors }}
+                <input class="btn btn-info submit_btn" type="submit" value="Confirm and {% if otherVars.profUpdate %}Update{% elif otherVars.passChange %}Change{% elif otherVars.edit %}Edit{% else %}Add{% endif %}" name="_submit" />
+                <input id="cancel_btn" class="btn btn-info" type="button" value="Cancel" onClick="javascript:window.location.href='{% url 'login' %}'" />
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block misc_docend %}
+	<script type="text/javascript">
+		function extensionCheck(element){r
+			var control = $(element);
+			var ext = control.val().split('.').pop().toLowerCase();
+			if($.inArray(ext, ['gif','png','jpg','jpeg']) == -1) {
+				control.wrap('<form>').closest('form').get(0).reset();
+				control.unwrap();
+			    //control.replaceWith(control = control.clone(true));
+			    alert('Invalid extension!');
+			}
+		}
+
+		$(document).ready(function(){
+			if ($('#id_avatar_img').length){
+				$('#id_avatar_img').change(function(){
+					extensionCheck(this);
+				})
+			}
+		});
+	</script>
+{% endblock %}

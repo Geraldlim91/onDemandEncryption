@@ -1,0 +1,41 @@
+{
+	"infoPanels":
+	[
+		{"title":"Heading",
+		"body":"Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,^s
+			tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem^s
+			malesuada magna mollis euismod. Donec sed odio dui."},
+		{"title":"Heading",
+		"body":"Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,^s
+			tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem^s
+			malesuada magna mollis euismod. Donec sed odio dui."},
+		{"title":"Heading",
+		"body":"Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,^s
+			tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem^s
+			malesuada magna mollis euismod. Donec sed odio dui."},
+		{"title":"Heading",
+		"body":"Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,^s
+			tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem^s
+			malesuada magna mollis euismod. Donec sed odio dui."},
+		{"title":"Heading",
+		"body":"Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,^s
+			tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem^s
+			malesuada magna mollis euismod. Donec sed odio dui."},
+		{"title":"Heading",
+		"body":"Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo,^s
+			tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem^s
+			malesuada magna mollis euismod. Donec sed odio dui."}
+	],
+	"carousel":
+	[
+		{"image":"img/antennae.jpg",
+		"url":"http://www.google.com",
+		"caption":"<h1>Slide 1</h1>"},
+		{"image":"img/carina.jpg",
+		"caption":"<h1>Slide 2</h1><p>weee</p>"},
+		{"image":"img/echo.jpg",
+		"caption":"<h1>Slide 3</h1>"},
+		{"image":"img/ngc5866.jpg",
+		"caption":"<h1>Slide 4</h1>"}
+	]
+}

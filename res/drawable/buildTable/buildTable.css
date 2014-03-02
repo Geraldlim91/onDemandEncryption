@@ -1,0 +1,150 @@
+.tab_wrapper
+{
+	overflow:auto;
+}
+.div_pageSel, .div_rowsInfo
+{
+	float:left;
+}
+.div_textSearch, .div_pagination, .div_filInput
+{
+	float:right;
+}
+.div_filInput
+{
+	margin-right:10px;
+}
+.btn_textSearch, .btn_checkAct
+{
+	display:inline-block;
+	width:30px;
+	text-align:center;
+	border:1px solid black;
+	border-radius:5px;
+	cursor:pointer;
+}
+.page_first, .page_prev, .page_next, .page_last
+{
+	color:#D0D0D0;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.page_first.enabled, .page_prev.enabled, .page_next.enabled, .page_last.enabled
+{
+	cursor:pointer;
+	color:black;
+}
+.page_first.enabled:hover, .page_prev.enabled:hover, .page_next.enabled:hover, .page_last.enabled:hover
+{
+	font-weight:bold;
+}
+.tab_wrapper th.sortableH
+{
+	cursor:pointer;
+}
+.tab_wrapper th i
+{
+	color:#B6B6B6;
+}
+.tab_wrapper tbody tr.even
+{
+	background-color: #EDF3FE;
+}
+.tab_wrapper tbody tr.even td.sortCell
+{
+	background-color: #99CCFF;
+}
+.tab_wrapper tbody tr.odd td.sortCell
+{
+	background-color: #C2E0FF;
+}
+.tab_wrapper tbody tr.odd
+{
+	background-color: white;
+}
+.tab_wrapper tbody tr.even.row_selected td
+{
+	background-color: #9FAFD1;
+}
+.tab_wrapper tbody tr.even.row_selected td.sortCell
+{
+	background-color: #99CCFF;
+}
+.tab_wrapper tbody tr.odd.row_selected td
+{
+	background-color: #B0BED9;
+}
+.tab_wrapper tbody tr.odd.row_selected td.sortCell
+{
+	background-color: #C2E0FF;
+}
+.tab_wrapper table
+{
+	margin-bottom:0px;
+}
+.checkable input[type=checkbox]
+{
+	-ms-transform: scale(1.2,1.2); /* IE */
+	-moz-transform: scale(1.2,1.2); /* FF */
+	-webkit-transform: scale(1.2,1.2); /* Safari and Chrome */
+	-o-transform: scale(1.2,1.2); /* Opera */
+}
+.tab_wrapper th
+{
+	white-space: nowrap;
+}
+.tab_wrapper td.checkable, .tab_wrapper th.checkable
+{
+	width:1%;
+	text-align:center;
+}
+i.clickableData
+{
+	font-weight:bold;
+	cursor:pointer;
+}
+i.clickableData:hover
+{
+	color:Red;
+}
+.loadingImg
+{
+	display:inline-block;
+	font-size:17px;
+	font-weight:bold;
+	padding:10px;
+	background-color:White;
+}
+.loadingImg img
+{
+	height:25px;
+}
+.loadingSpace
+{
+	display:block;
+}
+.div_loading
+{
+	display:none;
+	position:absolute;
+	top:0px;
+	left:0px;
+	z-index:10;
+	width:100px;
+	height:100px;
+	background-color:rgba(255,255,255,0.7);
+	text-align:center;
+}
+.tab_wrapper thead th
+{
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}

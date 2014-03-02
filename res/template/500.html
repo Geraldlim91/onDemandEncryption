@@ -1,0 +1,39 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{% block title %}{% trans 'Server error (500)' %}{% endblock %}</title>
+	<style type="text/css">
+		#headerCont .navbar
+		{
+			margin-bottom:0px;
+			width:100% !important;
+		}
+		
+		    p
+		    {
+			display:block;
+			font-weight:bold;
+			font-size:20px;
+			margin-bottom:10px;
+		    }
+		    h2
+		    {
+			display:block;
+			font-weight:bold;
+			font-size:30px;
+			margin-bottom:10px;
+		    }
+		    
+	</style>
+</head>
+<body>
+<div style="padding:15px 15px 0px 15px;">
+	<h1>{% trans 'Server Error <em>(500)</em>' %}</h1>
+	<p>{% trans "There's been an error. It's been reported to the site administrators via e-mail and should be fixed shortly. Thanks for your patience." %}</p>
+
+</div>
+
+</body>

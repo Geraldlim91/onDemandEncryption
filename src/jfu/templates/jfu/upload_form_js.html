@@ -1,0 +1,111 @@
+{% if testingtesting %}
+<script src="{{ STATIC_URL }}jquery/jquery-1.10.2.min.js"></script>
+{% comment %}
+The jQuery UI widget factory, can be omitted if jQuery UI is already included
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/vendor/jquery.ui.widget.js"></script>
+{% endif %}
+
+{% comment %}
+The Templates plugin is included to render the upload/download listings
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/tmpl.min.js"></script>
+{% comment %}
+The Load Image plugin is included for the preview images and image resizing functionality
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/load-image.min.js"></script>
+{% comment %}
+The Canvas to Blob plugin is included for image resizing functionality
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/canvas-to-blob.min.js"></script>
+
+{% if testingtesting %}
+{% comment %}
+Bootstrap JS is not required, but included for the responsive demo navigation
+{% endcomment %}
+<script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+{% endif %}
+
+{% comment %}
+blueimp Gallery script
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.blueimp-gallery.min.js"></script>
+{% comment %}
+The Iframe Transport is required for browsers without support for XHR file uploads
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.iframe-transport.js"></script>
+{% comment %}
+The basic File Upload plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload.js"></script>
+{% comment %}
+The File Upload processing plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload-process.js"></script>
+{% comment %}
+The File Upload image preview & resize plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload-image.js"></script>
+{% comment %}
+The File Upload audio preview plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload-audio.js"></script>
+{% comment %}
+The File Upload video preview plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload-video.js"></script>
+{% comment %}
+The File Upload validation plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload-validate.js"></script>
+{% comment %}
+The File Upload user interface plugin
+{% endcomment %}
+<script src="{{ STATIC_URL }}JQuery-File-Upload/js/jquery.fileupload-ui.js"></script>
+{% comment %}
+The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9
+{% endcomment %}
+<!--[if (gte IE 8)&(lt IE 10)]>
+<script src="js/cors/jquery.xdr-transport.js"></script>
+<![endif]-->
+
+{% comment %}
+ The main application script 
+{% endcomment %}
+<script type="text/javascript">
+    $(function() {
+        'use strict';
+        {% comment %}
+        Initialize the jQuery File Upload widget.
+        Default options are defined by the package, 
+        however users may extend and define their 
+        own options.
+        {% endcomment %}
+
+        $('#fileupload').fileupload({
+            formData: [
+                { name: "csrfmiddlewaretoken", value: "{{ csrf_token }}"}
+            ],
+            sequentialUploads: true
+        });
+        
+        {% comment %}
+        Load existing files.
+        {% endcomment %}
+        $('#fileupload').addClass('fileupload-processing');
+        $.ajax({
+            {% comment %}
+            Uncomment the following to send cross-domain cookies:
+            {% endcomment %}
+            //xhrFields: {withCredentials: true},
+            url: $('#fileupload').fileupload('option', 'url'),
+            dataType: 'json',
+            context: $('#fileupload')[0]
+        }).always(function () {
+            $(this).removeClass('fileupload-processing');
+        }).done(function (result) {
+            $(this).fileupload('option', 'done')
+                .call(this, null, {result: result});
+        });
+    });
+</script>

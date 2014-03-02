@@ -1,0 +1,726 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+
+{% block title %}onDemand Network Encryption{% endblock %}
+
+{% block misc_head %}
+    <link href="{% static 'buildTable/buildTable.css' %}" rel="stylesheet">
+    <style type="text/css">
+        body,html
+        {
+            min-width:400px;
+        }
+		#page_header
+		{
+			display:block;
+			font-weight:bold;
+			font-size:22px;
+			margin-bottom:10px;
+		}
+        #btn_add
+        {
+            margin-top:10px;
+            float:right;
+            font-size:12px;
+            height:28px;
+            font-weight:bold;
+            position:relative;
+            z-index:11;
+        }
+        .ui-dialog-titlebar-close
+        {
+            background-image:url('{% get_static_prefix %}img/closeicon.png');
+            background-repeat:no-repeat;
+            background-position:center;
+        }
+        #msgNotify
+        {
+            display:block;
+            border: 1px dotted Gray;
+            padding: 5px 0px 5px 10px;
+            margin-bottom:10px;
+            font-size:13px;
+            background-color:#FCFFB8;
+        }
+
+        #div_view_tab
+        {
+            margin-top:20px;
+            font-size:12px;
+        }
+        #div_view_tab label
+        {
+            font-size:12px;
+        }
+        #div_view_tab .form-control
+        {
+            display:inline-block;
+            height:28px;
+            padding:3px;
+            font-size:12px;
+        }
+        #div_view_tab input.form-control
+        {
+            padding:8px;
+        }
+        .checkAct
+        {
+            width:90px;
+        }
+        .pageSel
+        {
+            width:60px;
+        }
+        .textSearch
+        {
+            width:150px;
+        }
+        /*.btn_checkAct, .btn_textSearch
+        {
+            height:28px;
+            width:35px;
+            line-height:28px;
+            font-size:18px;
+            vertical-align:middle;
+            border:none;
+        }
+        .btn_checkAct i, .btn_textSearch i
+        {
+            vertical-align:middle !important;
+        }*/
+        .btn_checkAct, .btn_textSearch
+        {
+            border:none;
+            height:28px;
+            text-align:center;
+            width:35px;
+        }
+        .btn_checkAct i, .btn_textSearch i
+        {
+            vertical-align:2px;
+        }
+        .div_checkAct, .div_pageSel, .div_filInput
+        {
+            margin-bottom:8px;
+        }
+        .div_rowsInfo, .div_pagination
+        {
+            margin-top:8px;
+        }
+        .halign_center
+        {
+            text-align:center;
+        }
+
+        #left_pane
+        {
+            width:200px;
+            position:absolute;
+            top:0px;
+            left:0px;
+            border-right: 1px solid Black;
+        }
+        #left_pane .panel-heading
+        {
+            text-align:center;
+            cursor: pointer;
+            position:relative;
+        }
+        #left_pane .panel-body
+        {
+            text-align:center;
+            font-size:16px;
+        }
+        #left_pane .panel-body a
+        {
+            display:inline-block;
+            margin-top:7px;
+        }
+        #left_pane .panel-body a:first-child
+        {
+            display:inline-block;
+            margin-top:0px;
+        }
+        #left_pane .panel-body > div
+        {
+            display:inline-block;
+            text-align:left;
+            margin-left:-10px;
+        }
+        .heading_cont img
+        {
+            height:15px;
+        }
+        .heading_cont
+        {
+            display:inline;
+        }
+        #right_pane
+        {
+            position:absolute;
+            top:189px;
+            right:0px;
+            bottom: 0px;
+            z-index:1000;
+        }
+        #actOv_Div > div
+        {
+            border-bottom:1px solid Black;
+            cursor:pointer;
+        }
+        #actOv_Div > div:last-child
+        {
+            border-bottom:none;
+        }
+        .actOv_name
+        {
+            background-color:#B8DBFF;
+            display:inline-block;
+        }
+        .actOv_name:hover
+        {
+            color:#000000;
+        }
+        .actOv_num
+        {
+            background-color:#6D6D6D;
+            vertical-align:2px;
+            padding-top:5px;
+            margin-left:10px;
+            border-radius:8px;
+        }
+        .rightPCollapse
+        {
+            height:50px;
+            border-bottom:1px solid Black;
+            font-size:16px;
+            line-height:50px;
+            text-align:center;
+            background-color:#B8DBFF;
+            cursor:pointer;
+            position:relative;
+        }
+        .rightPCollapse > span:first-child
+        {
+            display:inline-block;
+            text-align:left;
+            font-weight:bold;
+        }
+        #evtLog_Div > div
+        {
+            border-bottom:1px solid Black;
+            cursor:pointer;
+        }
+        #evtLog_Div > div:last-child
+        {
+            border-bottom:none;
+        }
+        #rightPIconBtn > span
+        {
+            display:inline-block;
+            text-align:center;
+            font-size:40px;
+            border-right:1px solid black;
+            width:83px;
+            padding:10px 0px 10px 0px;
+            cursor:pointer;
+        }
+        {#		#rightPIconBtn > span:last-child#}
+        {#		{#}
+        {#			border-right:none;#}
+        {#			width:82px;#}
+        {#		}#}
+        .manage_items
+        {
+            display:block;
+            text-align:center;
+            border-bottom:1px solid gray;
+            cursor:pointer;
+            height:45px;
+            line-height:45px;
+        }
+        .manage_items:hover
+        {
+            color:Black;
+            font-weight:bold;
+        }
+	</style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div id="right_pane">
+            <div style="background-color:#909090; width:35px; height:35px; cursor:pointer; position:absolute; top:0px; right:0px; z-index:5;border-radius:10px 0px 0px 10px;" onClick="toggleRP()">
+                <span id="rpane_contlbl" class="fa fa-chevron-circle-left" style="line-height:35px;font-size:28px;display:inline-block;margin-left:6px;"></span>
+            </div>
+            <div id="rcont_div" style="background-color:#E3E4E7; height:95%; width:250px; border-left:1px solid Black; display:none;">
+					<span style="display:block; height:50px; border-bottom:1px solid Black; font-size:16px; line-height:50px; text-align:center;">
+{#						<b>Administrator</b>#}
+					</span>
+					<span style="display:inline-block;font-size:16px;vertical-align:middle;">
+						Welcome,
+						<i>{% if request.user.first_name %}{{ request.user.first_name }} {{ request.user.last_name }}{% else %}{{ request.user.username|default:"User's Name" }}{% endif %}</i>
+					</span>
+					<span id="rightPIconBtn" style="display:block;border-width:1px 0px 1px 0px;border-color:black;border-style:solid;">
+						<span class="fa fa-home homeBtn" style="position:relative;" onClick="toggleShowDiv(this,'#actOv_evtLog')"></span><!-- This is to remove white space, another way is to set font-size of parent div to 0;
+						--><span class="fa fa-users notifyBtn" style="position:relative;" onClick="toggleShowDiv(this,'#notify_div')"></span><!-- This is to remove white space, another way is to set font-size of parent div to 0;
+						--><span class="fa fa-key manageBtn" onClick="toggleShowDiv(this,'#manage_div')"></span>
+					</span>
+                <div id="notify_div" style="display:none;">
+                    <span style="display:block;height:50px;border-bottom:1px solid Black;font-size:16px;line-height:50px;text-align:center;background-color:#7DB4FF;position:relative;"><b>Manage Contact</b></span>
+
+                    <span class="manage_items rightPCollapse"   onclick="javascript:window.location.href='/main/friends'">Add/Remove Contact</span>
+                    <div class="rightPCollapse" data-toggle="collapse" data-target="#act1v_Div">
+                        <span style='text-align: center;font-weight:normal;'>Contact List</span>
+                        <span class="fa fa-minus-square" style="position:absolute;top:10px;right:10px;font-size:20px;"></span>
+                    </div>
+                    <div id="act1v_Div" class="collapse in" style="font-size:16px; line-height:50px; border-bottom:1px solid Black;">
+                        {% for contact in contactList %}
+                            <span style='font-weight: bold;font-size: 16px;color: black;'>{{ contact }}</span> </br>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+                <div id="manage_div" style="display:none;">
+                    <span style="display:block;height:50px;border-bottom:1px solid Black;font-size:16px;line-height:50px;text-align:center;background-color:#7DB4FF;position:relative;"><b>Manage Account</b></span>
+                    <span class="manage_items rightPCollapse" onclick="javascript:window.location.href='{% url 'editProfile' %}'">Update Profile</span>
+                    <span class="manage_items rightPCollapse" onclick="javascript:window.location.href='{% url 'changePassword' %}'">Change Password</span>
+                </div>
+                <div id="actOv_evtLog">
+                    <div class="rightPCollapse" data-toggle="collapse" data-target="#actOv_Div">
+                        <span style="display:block;height:50px;border-bottom:1px solid Black;font-size:16px;line-height:50px;text-align:center;background-color:#7DB4FF;position:relative;"><b>Overview</b></span>
+
+                        <span class="fa fa-minus-square" style="position:absolute;top:10px;right:10px;font-size:20px;"></span>
+                    </div>
+                    <div id="actOv_Div" class="collapse in" style="font-size:16px; line-height:50px; border-bottom:1px solid Black;">
+                        <div style='background-color: #B8DBFF;' onClick="gotoPage('{% url 'shareToUserView' %}')">
+								<span>
+									<span class="actOv_name">Shared with you</span>
+								</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="padding:15px 15px 0px 15px;">
+            <span style="font-weight: bold;color: grey">Quota Limit</span>
+            <div class="progress progress-striped active">
+                {% if otherVars.quota < "80" %}
+                <div class="progress-bar"  role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: {{ otherVars.quota }}%">
+                    <span style='font-weight: bold; color: black'>{{ otherVars.quota }}% Storage Used</span>
+                </div>
+                {% else %}
+                    <div class="progress-bar progress-bar-danger"  role="progressbar"  aria-valuemin="0" aria-valuemax="100" style="width: {{ otherVars.quota }}%">
+                        <span style='font-weight: bold;color: black'>{{ otherVars.quota }}% Storage Used</span>
+                    </div>
+
+                {% endif %}
+            </div>
+            {% if otherVars.msgNote %}
+            <span id="msgNotify">
+			{{ otherVars.msgNote|safe }}
+		    </span>
+            {% endif %}
+            <span id="btn_add" class="btn btn-info" onclick="javascript:window.location.href='{% url 'fileUpload' %}'">
+                <i class="fa fa-plus" style="margin-right:10px;"></i>Upload File
+            </span>
+            <table id="view_tab" class="table table-bordered">
+                <thead>
+                    <tr style="background-color:#F0F0F0">
+                        <th class="sortableH searchableCol defaultSort" value="0">File name</th>
+                        <th value="1">Hash(MD5)</th>
+                        <th value="2">File Size</th>
+			            <th value="3">Uploaded Date</th>
+                        <th value="4">Sharing</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="checkActVal"></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+			            <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div id="dialog-confirm" title="{{ delMsg.0 }}">
+                <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                    <span id="selAmt"></span>&nbsp;{{ delMsg.1 }}
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+	
+{% block misc_docend %}
+    <script src="{% static 'buildTable/buildTable.js' %}"></script>
+	<script type="text/javascript">
+    $(document).ready(function (){
+        // timeout for notification message
+        setTimeout(function() {
+            $('#msgNotify').fadeOut(300, function(){
+                resizeFunc();
+            });
+        },4500);
+
+        // confirm dialog configuration
+        $("#dialog-confirm").dialog({
+            modal: true,
+            bgiframe: true,
+            width: 500,
+            height: 200,
+            autoOpen: false
+        });
+
+        // Build the table
+        $('#view_tab').buildTable({
+            updateUrl : "{% url 'fileViewUpdate' %}",
+            initialValues : {{ tableInfo.fileList|safe }},
+            availCheckAct : ['Download','Delete'],
+            checkSingleOnly : ['Download'],
+            addCheckable : true,
+            checkActFunc : function(checkValArr){
+                selectActHandler(this,checkValArr);
+            },
+            clickableFunc : function(){
+                window.location.href = "{% url 'downloadFileURL' %}" + $(this).text();
+            },
+            completeEvenFunc : function(){
+                resizeFunc();
+            },
+            windowResizeFunc : function(){
+                resizeFunc();
+            },
+            tableEmptyMsg : "{{ tabEmptyMsg }}",
+            recordStart : {{ tableInfo.recordStart|default:"0" }},
+            recordEnd : {{ tableInfo.recordEnd|default:"0" }},
+            numOfRecords : {{ tableInfo.numOfRecords }},
+            filterType : [],
+            sortedCol : [],
+            nextPage : {% if tableInfo.nextEnabled %}true{% else %}false{% endif %},
+            tableFunc : {% if tableInfo.numOfRecords %}true{% else %}false{% endif %}
+        });
+        $('.checkAct').addClass('form-control');
+        $('.pageSel').addClass('form-control');
+        $('.textSearch').addClass('form-control');
+        $('.btn_checkAct').addClass('btn btn-info');
+        $('.btn_textSearch').addClass('btn btn-info');
+    });
+
+		// function to handle actions that user selected (for highlighted rows)
+        function selectActHandler(element, checkValArr){
+            if (checkValArr.length > 0){
+                var selected = $(element).val();
+                switch (selected){
+                    case "Download":
+                        if (checkValArr.length == 1)
+                            window.location.href = "{% url 'downloadFileURL' %}" + checkValArr[0];
+                        break;
+                    case "Delete":
+                        $('#selAmt').text(checkValArr.length);
+                        $("#dialog-confirm").dialog('option', 'buttons', {
+                            "Confirm": function () {
+                                var selectedIDs = checkValArr.join(';');
+                                window.location.href = "{% url 'fileDelURL' %}"+selectedIDs;
+                            },
+                            "Cancel": function () {
+                                $(this).dialog("close");
+                            }
+                        });
+                        $("#dialog-confirm").dialog("open");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+
+        var timerVar;
+        // Add trim function if browser doesn't include it natively
+        if (!String.prototype.trim) {
+            String.prototype.trim = function() {
+                return this.replace(/^\s+|\s+$/g,'');
+            }
+        }
+
+        // align left pane's panel heading
+        var leftOff = 9999;
+        var currOff = 0;
+        $('.heading_cont').each(function (){
+            currOff = $(this).offset().left;
+            if (currOff < leftOff)
+                leftOff = currOff;
+        });
+        $('.heading_cont').each(function (){
+            currOff = $(this).offset().left-leftOff;
+            $(this).css('margin-left', '-'+(2*currOff+10)+'px');
+        });
+
+        // make right pane visible first, do function to align the menu items, then hide it again
+        var rcontdiv = $('#rcont_div');
+        rcontdiv.css('display','block');
+        var curW=0, maxW=0, maxIndex=0, leftOff=0;
+        $('.actOv_name').each(function (index){
+            curW = $(this).width();
+            if (curW > maxW){
+                maxW = curW;
+                maxIndex = index;
+            }
+            $(this).parent().css('position','relative');
+        });
+        leftOff = Math.round(($('#actOv_Div').width() - $('.actOv_name').eq(maxIndex).parent().width())/2);
+
+        $('.actOv_name').each(function (){
+            $(this).width(maxW+10);
+            $(this).parent().css('left', leftOff-7+'px');
+            //$(this).siblings('.actOv_num').css('left','20px');
+        });
+        $('.rightPCollapse span:first-child').each(function (index){
+            curW = $(this).width();
+            if (curW > maxW)
+                maxW = curW;
+        });
+        $('.rightPCollapse span:first-child').each(function (index){
+            $(this).width(maxW+1);
+        });
+        rcontdiv.css('display','none');
+
+        // function to change icons for collapsible panels
+        $('.collapse').on({
+            'shown.bs.collapse': function(){
+                $(this).prev().children('.fa.fa-plus-square').removeClass('fa-plus-square').addClass('fa-minus-square');
+                resizeFunc();
+            },
+            'hidden.bs.collapse': function(){
+                $(this).prev().children('.fa.fa-minus-square').removeClass('fa-minus-square').addClass('fa-plus-square');
+                resizeFunc();
+            }
+        });
+
+        // function to show/hide notification/management/settings
+        var notifyVis = false;
+        var manageVis = false;
+        var actOvis = false;
+        var settingVis = false;
+
+        function toggleShowDiv(iconButton,divEle){
+            if ($('#actOv_evtLog').is(':animated') || $(divEle).is(':animated'))
+                return false;
+            switch (divEle){
+                case "#notify_div":
+                    hideHomeDiv()
+                    hideManageDiv();
+                    checkDivState(notifyVis,iconButton,divEle);
+                    notifyVis = !notifyVis;
+                    break;
+                case "#manage_div":
+                    hideHomeDiv()
+                    hideNotifyDiv();
+                    checkDivState(manageVis,iconButton,divEle);
+                    manageVis = !manageVis;
+                    break;
+
+                case "#actOv_evtLog":
+                    hideNotifyDiv();
+                    hideManageDiv();
+                    checkDivState(actOvis,iconButton,divEle);
+                    actOvis = !actOvis;
+                    break;
+
+                default:
+                    hideHomeDiv();
+
+                    hideNotifyDiv();
+                    hideManageDiv();
+
+                    break;
+            }
+        }
+
+        function checkDivState(status,iconButton,divEle){
+            if (status){
+                $(divEle).hide(300, function(){
+                    $(iconButton).css({
+                        'background-color':'',
+                        'color':'Black'
+                    });
+                    if (divEle == "#notify_div"){
+                        $(iconButton).children('.badge').css({
+                            'background-color':'Blue',
+                            'color':'Black'
+                        });
+                    }
+                });
+                $('#actOv_evtLog:hidden').show(300);
+            } else {
+                $(divEle).show(300, function(){
+                    $(iconButton).css({
+                        'background-color':'#7DB4FF',
+                        'color':'Black'
+                    });
+                    if (divEle == "#notify_div"){
+                        $(iconButton).children('.badge').css({
+                            'background-color':'Black',
+                            'color':'Black'
+                        });
+                    }
+
+                });
+                if (divEle == "#actOv_evtLog"){
+                    $('#actOv_evtLog:visible').show(300);
+
+                }
+                else{
+                    $('#actOv_evtLog:visible').hide(300);
+                }
+            }
+        }
+
+        function hideNotifyDiv(){
+            if (notifyVis){
+                $('#notify_div').hide(300, function(){
+                    $('.notifyBtn').css({
+                        'background-color':'',
+                        'color':'Black'
+                    }).children('.badge').css({
+                                'background-color':'Blue',
+                                'color':'Black'
+                            });
+                });
+                notifyVis = false;
+            }
+        }
+        function hideManageDiv(){
+            if (manageVis){
+                $('#manage_div').hide(300, function(){
+                    $('.manageBtn').css({
+                        'background-color':'',
+                        'color':'Black'
+                    });
+                });
+                manageVis = false;
+            }
+        }
+
+        function hideHomeDiv(){
+            if (actOvis){
+                $('#actOv_evtLog').hide(300, function(){
+                    $('.homeBtn').css({
+                        'background-color':'',
+                        'color':'Black'
+                    });
+                });
+                actOvis = false;
+            }
+        }
+
+        // redirection function
+        function gotoPage(urlLink) {
+            window.location.href = urlLink;
+        }
+
+
+        // function to show/hide right pane
+        var hidden = true;
+        function toggleRP() {
+            var element = $('#rcont_div');
+            var ctrlspan = $('#rpane_contlbl');
+            if (hidden){
+                element.show("slide", {direction:"right"}, 300);
+                ctrlspan.parent().animate({
+                    right: "+=214",
+                }, 310, function() {
+                    $(this).css('border-radius','0px 10px 10px 0px');
+                    ctrlspan.removeClass('fa-chevron-circle-left').addClass('fa-chevron-circle-right');
+                    resizeFunc();
+                });
+            } else {
+                element.hide("slide", {direction:"right"}, 300);
+                ctrlspan.parent().animate({
+                    right: "-=214",
+                }, 310, function() {
+                    $(this).css('border-radius','10px 0px 0px 10px')
+                    ctrlspan.removeClass('fa-chevron-circle-right').addClass('fa-chevron-circle-left');
+                    resizeFunc();
+                    clearTimeout(timerVar);
+                });
+            }
+            hidden = !hidden;
+        }
+
+        // function to resize the left and right panes to make them of the same height (middle_cont too)
+        function resizeFunc() {
+            var navbar_H = $('.navbar.navbar-inverse').height() + 1;
+            var leftPane = $('#left_pane');
+            var rightPane = $('#right_pane').children('#rcont_div');
+            var middleCont = $('#middle_cont');
+            var winH = $(window).innerHeight();
+            var newH = 0;
+            leftPane.css('min-height', '');
+            middleCont.css('min-height', '');
+            rightPane.css('min-height', '');
+            newH = leftPane.height();
+            if (rightPane.height() > newH)
+                newH = rightPane.height();
+            if (middleCont.height() > newH)
+                newH = middleCont.height();
+            if (winH - newH >= 50){
+                newH = winH - navbar_H;
+            }
+            leftPane.css('min-height', newH + 'px');
+            middleCont.css('min-height', newH + 'px');
+            rightPane.css('min-height', 250 + 'px');
+
+            //$('.navbar').css('min-width',$('#overallholder').width()+'px');
+            //alert('Window height: '+$(window).innerHeight()+', left: '+leftPane.height()+', right: '+rightPane.height()+', newH: '+newH);
+        };
+
+        // call resize function after window is resized (30 milliseconds)
+        $(window).resize(function() {
+            clearTimeout(this.id);
+            this.id = setTimeout(resizeFunc, 30);
+        });
+
+        // Adds CSRF cookie to ajax calls to correct csrf error
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            crossDomain: false, // obviates need for sameOrigin test
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type)) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+
+{% endblock %}
+<script>
+    $(window).load(function(){
+        resizeFunc();
+    });
+</script>

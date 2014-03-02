@@ -1,0 +1,144 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+
+{% block title %}My Site{% endblock %}
+
+{% block misc_head %}
+	<link href="{% static 'css/carousel.css' %}" rel="stylesheet">
+	<style type="text/css">
+		.collapse_panel
+		{
+			color:Black;
+			position:absolute;
+			right:30px;
+			outline:none;
+		}
+		.collapse_panel:hover
+		{
+			color:White;
+			text-decoration:none;
+		}
+		.collapse_panel:focus
+		{
+			outline:none;
+			text-decoration:none;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+	<!--  Carousel -->
+	<!--  consult Bootstrap docs at http://twitter.github.com/bootstrap/javascript.html#carousel -->
+		{% if otherVars.carouselValues and otherVars.carouselValues|length > 1 %}
+			<div id="imageCarousel" class="carousel slide">
+				<!-- Indicators -->
+				<ol class="carousel-indicators">
+					{% for carouselInfo in otherVars.carouselValues %}
+						<li data-target="#imageCarousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+					{% endfor %}
+				</ol>
+		
+				<div class="carousel-inner">
+					{% for carouselInfo in otherVars.carouselValues %}
+						<div class="item{% if forloop.first %} active{% endif %}">
+							{% if carouselInfo.cUrl %}
+								<a href="{{ carouselInfo.cUrl }}">
+							{% endif %}
+									<img src="{% get_static_prefix %}{{ carouselInfo.cImage }}" alt="Antennae Galaxies" />
+							{% if carouselInfo.cUrl %}
+								</a>
+							{% endif %}
+							{% if carouselInfo.cCaption %}
+								<div class="carousel-caption">
+									{{ carouselInfo.cCaption|safe }}
+									<br/>
+								</div>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+				
+				<!-- .carousel-inner -->
+				<!--  next and previous controls here
+				      href values must reference the id for this carousel -->
+				<a class="left carousel-control" href="#imageCarousel" data-slide="prev">
+					<span class="fa fa-chevron-circle-left"></span>
+					<span style="position:absolute;top:0px;left:0px;width:100%;height:100%;">
+					</span>
+				</a>
+				<a class="right carousel-control" href="#imageCarousel" data-slide="next">
+					<span class="fa fa-chevron-circle-right"></span>
+					<span style="position:absolute;top:0px;left:0px;width:100%;height:100%;">
+					</span>
+				</a>
+			</div>
+		{% endif %}
+		<!-- .carousel -->
+		<!-- end carousel -->
+		<br/>
+		<div class="row">
+			{% if otherVars.panelValues %}
+				{% for panelInfo in otherVars.panelValues %}
+				<div class="col-6 col-sm-6 col-lg-4">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h3 class="panel-title" style="display:inline">{{ panelInfo.pTitle }}</h3>
+							<a class="collapse_panel" data-toggle="collapse" href="#collapse{{ forloop.counter }}">
+					          	<span class="fa fa-caret-square-o-down"></span>
+					        </a>
+						</div>
+						<div id="collapse{{ forloop.counter }}" class="collapse in">
+							<div class="panel-body">
+								<p>
+									{{ panelInfo.pBody }}
+								</p>
+								<p>
+									<a class="btn btn-default" href="javascript:void(0)">View details &raquo;</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<!--/row-->
+	</div>
+	<!--/.container-->
+{% endblock %}
+	
+{% block misc_docend %}
+	<script type="text/javascript">
+		/*
+		$('.left.carousel-control').click(function(){
+			this.blur();
+		});
+		$('.right.carousel-control').click(function(){
+			this.blur();
+		});
+		*/
+		
+		$('.left.carousel-control').mouseleave(function(){
+			this.blur();
+		});
+		$('.right.carousel-control').mouseleave(function(){
+			this.blur();
+		});
+		
+		$('.collapse_panel').click(function(){
+			var child = $(this).children('span').eq(0);
+			if (child.hasClass('fa-caret-square-o-up'))
+				child.removeClass('fa-caret-square-o-up').addClass('fa-caret-square-o-down');
+			else
+				child.removeClass('fa-caret-square-o-down').addClass('fa-caret-square-o-up');
+		});
+		
+		/*
+		var activeli = $('.nav.navbar-nav').children('li').eq(0);
+		activeli.addClass('active');
+		activeli.children('a').attr('href','javascript:void(0)');
+		*/
+	</script>
+{% endblock %}

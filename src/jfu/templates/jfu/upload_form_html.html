@@ -1,0 +1,204 @@
+{% comment %}
+The file upload form used as target for the file upload widget 
+{% endcomment %}
+<form id="fileupload" action="{{ upload_handler_url }}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% comment %}
+    Redirect browsers with JavaScript disabled to the origin page 
+    {% endcomment %}
+    <noscript>
+        <input type="hidden" name="redirect" value="{{ request.path }}">
+    </noscript>
+    
+    {% comment %}
+    The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload
+    {% endcomment %}
+    <div class="fileupload-buttonbar">
+    	<div class="row" style="margin:0px;padding:0px;">
+	        <div class="col-lg-7" style="padding:0px;">
+	            {% comment %}
+	            The fileinput-button span is used to style the file input field as button 
+	            {% endcomment %}
+	            <span class="btn btn-success fileinput-button">
+	                <i class="glyphicon glyphicon-plus"></i>
+	                <span>Add files...</span>
+	                <input type="file" name="files[]" multiple
+	                    {% if accepted_mime_types %}
+	                        accept = '{{ accepted_mime_types|join:"," }}'
+	                    {% endif %}
+	                >
+	            </span>
+	            <button type="submit" class="btn btn-primary start">
+	                <i class="glyphicon glyphicon-upload"></i>
+	                <span>Start upload</span>
+	            </button>
+	            <button type="reset" class="btn btn-warning cancel">
+	                <i class="glyphicon glyphicon-ban-circle"></i>
+	                <span>Cancel upload</span>
+	            </button>
+	            <button type="button" class="btn btn-danger delete">
+	                <i class="glyphicon glyphicon-trash"></i>
+	                <span>Delete</span>
+	            </button>
+	            <input type="checkbox" class="toggle">
+	        </div>
+        </div>
+
+		<div class="row" style="margin:0px;padding:0px;">
+            {% comment %}
+            The global file processing state
+            {% endcomment %}
+            <span class="fileupload-process"></span>
+	        {% comment %}
+	        The global progress information 
+	        {% endcomment %}
+	        <div class="col-lg-5 fileupload-progress fade" style="padding:0px;">
+	            {% comment %}
+	            The global progress bar 
+	            {% endcomment %}
+	            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+	                <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+	            </div>
+	            {% comment %}
+	            The extended global progress information 
+	            {% endcomment %}
+	            <div class="progress-extended">&nbsp;</div>
+	        </div>
+        </div>
+    </div>
+
+	<div style="width:100%;overflow-x:auto;padding-right:15px;">
+	    {% comment %}
+	    The table listing the files available for upload/download 
+	    {% endcomment %}
+	    <table role="presentation" class="table table-striped">
+	    	<tbody class="files"></tbody>
+	    </table>
+    </div>
+</form>
+
+{% comment %}
+The blueimp Gallery widget
+{% endcomment %}
+<div id="blueimp-gallery" class="blueimp-gallery blueimp-gallery-controls" data-filter=":even">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="close">×</a>
+    <a class="play-pause"></a>
+    <ol class="indicator"></ol>
+</div>
+
+{% comment %}
+The template to display files available for upload 
+{% endcomment %}
+<script id="template-upload" type="text/x-tmpl">
+{{ JQ_OPEN }} for (var i=0, file; file=o.files[i]; i++) { {{ JQ_CLOSE }}
+    <tr class="template-upload fade">
+    	{% if enablePreview %}
+    	<td>
+            <span class="preview"></span>
+        </td>
+        {% endif %}
+        <td>
+        	<p>{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}</p>
+        	<strong class="error text-danger"></strong>
+        </td>
+    	<td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            	<div class="progress-bar progress-bar-success" style="width:0%;"></div>
+            </div>
+        </td>
+        <td><label>Key: <input class="encryptKey" type="password" name="encryptKey" maxlength="30" required></label></td>
+        <td>
+            {{ JQ_OPEN }} if (!i && !o.options.autoUpload) { {{ JQ_CLOSE }}
+                <button class="btn btn-primary start" disabled>
+                    <i class="glyphicon glyphicon-upload"></i>
+                    <span>Start</span>
+                </button>
+            {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+            {{ JQ_OPEN }} if (!i) { {{ JQ_CLOSE }}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+        </td>
+	</tr>
+{{ JQ_OPEN }} } {{ JQ_CLOSE }}
+</script>
+
+{% comment %}
+The template to display files available for download 
+{% endcomment %}
+<script id="template-download" type="text/x-tmpl">
+{{ JQ_OPEN }} for (var i=0, file; file=o.files[i]; i++) { {{ JQ_CLOSE }}
+    <tr class="template-download fade">
+    	{% if enablePreview %}
+    	<td>
+    		<span class="preview">
+            	{{ JQ_OPEN }} if (file.thumbnailUrl) { {{ JQ_CLOSE }}
+                	<a href="{{ JQ_OPEN }}=file.url{{ JQ_CLOSE }}" 
+                   		title="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}" 
+                   		download="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}" 
+                   		data-gallery>
+                		<img src="{{ JQ_OPEN }}=file.thumbnailUrl{{ JQ_CLOSE }}">
+                	</a>
+            	{{ JQ_OPEN }} } {{ JQ_CLOSE }}
+            </span>
+        </td>
+        {% endif %}
+        <td>
+            <p class="name">
+            	{% if enableDownload %}
+                {{ JQ_OPEN }} if (file.url) { {{ JQ_CLOSE }}
+                    <a href="{{ JQ_OPEN }}=file.url{{ JQ_CLOSE }}" 
+                    title="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}" 
+                    download="{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}" 
+                    {{ JQ_OPEN }}=file.thumbnailUrl?'data-gallery':''{{ JQ_CLOSE }}>
+                    	{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}
+                    </a>
+                {{ JQ_OPEN }} } else { {{ JQ_CLOSE }}
+                {% endif %}
+                    <span>{{ JQ_OPEN }}=file.name{{ JQ_CLOSE }}</span>
+                {% if enableDownload %}
+                {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+                {% endif %}
+            </p>
+            {{ JQ_OPEN }} if (file.error) { {{ JQ_CLOSE }}
+                <div>
+                	<span class="label label-danger">Error</span>
+                	{{ JQ_OPEN }}=file.error{{ JQ_CLOSE }}
+                </div>
+            {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+        </td>
+        <td>
+            <span class="size">{{ JQ_OPEN }}=o.formatFileSize(file.size){{ JQ_CLOSE }}</span>
+        </td>
+        <td>
+        </td>
+        <td style="white-space:nowrap;">
+            {{ JQ_OPEN }} if (file.deleteUrl) { {{ JQ_CLOSE }}
+                <button class="btn btn-danger delete" 
+                data-type="{{ JQ_OPEN }}=file.deleteType{{ JQ_CLOSE }}" 
+                data-data='{ "csrfmiddlewaretoken" : "{{ csrf_token }}" }'
+                data-url="{{ JQ_OPEN }}=file.deleteUrl{{ JQ_CLOSE }}"
+                {{ JQ_OPEN }} if (file.deleteWithCredentials) { {{ JQ_CLOSE }} 
+                	data-xhr-fields='{"withCredentials":true}'
+                {{ JQ_OPEN }} } {{ JQ_CLOSE }}>
+                    <i class="glyphicon glyphicon-trash"></i>
+                    <span>Delete</span>
+                </button>
+                <input type="checkbox" name="delete" value="1" class="toggle">
+            {{ JQ_OPEN }} } else { {{ JQ_CLOSE }}
+                <button class="btn btn-warning cancel">
+                    <i class="glyphicon glyphicon-ban-circle"></i>
+                    <span>Cancel</span>
+                </button>
+            {{ JQ_OPEN }} } {{ JQ_CLOSE }}
+        </td>
+    </tr>
+{{ JQ_OPEN }} } {{ JQ_CLOSE }}
+</script>

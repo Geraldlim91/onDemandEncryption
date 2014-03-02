@@ -1,0 +1,234 @@
+{% extends "main/basetemplate.html" %}
+
+{% load static %}
+
+{% block misc_head %}
+    <link href="{% static 'buildTable/buildTable.css' %}" rel="stylesheet">
+
+	<![endif]-->
+    <style type="text/css">
+
+        body,html
+        {
+            min-width:400px;
+        }
+        #page_header
+        {
+            display:block;
+            font-weight:bold;
+            font-size:30px;
+            margin-bottom:10px;
+        }
+        #btn_add
+        {
+            margin-top:10px;
+            float:right;
+            font-size:12px;
+            height:28px;
+            font-weight:bold;
+            position:relative;
+            z-index:11;
+        }
+        .ui-dialog-titlebar-close
+        {
+            background-image:url('{% get_static_prefix %}img/closeicon.png');
+            background-repeat:no-repeat;
+            background-position:center;
+        }
+        #msgNotify
+        {
+            display:block;
+            border: 1px dotted Gray;
+            padding: 5px 0px 5px 10px;
+            margin-bottom:10px;
+            font-size:13px;
+            background-color:#FCFFB8;
+        }
+        #div_view_tab
+        {
+            margin-top:20px;
+            font-size:12px;
+        }
+        #div_view_tab label
+        {
+            font-size:12px;
+        }
+        #div_view_tab .form-control
+        {
+            display:inline-block;
+            height:28px;
+            padding:3px;
+            font-size:12px;
+        }
+        #div_view_tab input.form-control
+        {
+            padding:8px;
+        }
+        .checkAct
+        {
+            width:90px;
+        }
+        .pageSel
+        {
+            width:60px;
+        }
+        .textSearch
+        {
+            width:150px;
+        }
+            /*.btn_checkAct, .btn_textSearch
+            {
+                height:28px;
+                width:35px;
+                line-height:28px;
+                font-size:18px;
+                vertical-align:middle;
+                border:none;
+            }
+            .btn_checkAct i, .btn_textSearch i
+            {
+                vertical-align:middle !important;
+            }*/
+        .btn_checkAct, .btn_textSearch
+        {
+            border:none;
+            height:28px;
+            text-align:center;
+            width:35px;
+        }
+        .btn_checkAct i, .btn_textSearch i
+        {
+            vertical-align:2px;
+        }
+        .div_checkAct, .div_pageSel, .div_filInput
+        {
+            margin-bottom:8px;
+        }
+        .div_rowsInfo, .div_pagination
+        {
+            margin-top:8px;
+        }
+        .halign_center
+        {
+            text-align:center;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+    <div style="padding:15px 15px 0px 15px;">
+        {% if otherVars.msgNote %}
+            <span id="msgNotify">
+            {{ otherVars.msgNote|safe }}
+        </span>
+        {% endif %}
+        <table id="view_tab" class="table table-bordered">
+            <thead>
+            <tr style="background-color:#F0F0F0">
+                <th class="sortableH searchableCol defaultSort" value="0">Name</th>
+                <th value="1">Add Friend</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td style='font-weight: bold;font-style:italic;'></td>
+                <td></td>
+
+            </tr>
+            </tbody>
+        </table>
+        <div id="dialog-confirm" title="{{ delMsg.0 }}">
+            <p>
+                <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                <span id="selAmt"></span>&nbsp;{{ delMsg.1 }}
+            </p>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block misc_docend %}
+    <script src="{% static 'buildTable/buildTable.js' %}"></script>
+    <script type="text/javascript">
+        // function to handle actions that user selected (for highlighted rows)
+{#        function selectActHandler(element, checkValArr){#}
+{#            if (checkValArr.length > 0){#}
+{#                var selected = $(element).val();#}
+{#                switch (selected){#}
+{#                    case "Download":#}
+{#                        if (checkValArr.length == 1)#}
+{#                            window.location.href = "#";#}
+{#                        break;#}
+{#                    case "Delete":#}
+{#                        $('#selAmt').text(checkValArr.length);#}
+{#                        $("#dialog-confirm").dialog('option', 'buttons', {#}
+{#                            "Confirm": function () {#}
+{#                                var selectedIDs = checkValArr.join(';');#}
+{#                                window.location.href = "#";#}
+{#                            },#}
+{#                            "Cancel": function () {#}
+{#                                $(this).dialog("close");#}
+{#                            }#}
+{#                        });#}
+{#                        $("#dialog-confirm").dialog("open");#}
+{#                        break;#}
+{#                    default:#}
+{#                        break;#}
+{#                }#}
+{#            }#}
+{#        }#}
+        $(document).ready(function (){
+            // timeout for notification message
+            setTimeout(function() {
+                $('#msgNotify').fadeOut(300, function(){
+                    resizeFunc();
+                });
+            },4500);
+
+            // confirm dialog configuration
+            $("#dialog-confirm").dialog({
+                modal: true,
+                bgiframe: true,
+                width: 500,
+                height: 200,
+                autoOpen: false
+            });
+
+            // Build the table
+            $('#view_tab').buildTable({
+                updateUrl : "{% url 'friendViewUpdate' %}",
+                initialValues : {{ tableInfo.friendList|safe }},
+{#                availCheckAct : ['Download','Delete'],#}
+{#                checkSingleOnly : ['Download'],#}
+                addCheckable : false,
+                checkActFunc : function(checkValArr){
+                    selectActHandler(this,checkValArr);
+                },
+                clickableFunc : function(){
+                    window.location.href = "#";
+                },
+                completeEvenFunc : function(){
+                    resizeFunc();
+                },
+                windowResizeFunc : function(){
+                    resizeFunc();
+                },
+                tableEmptyMsg : "{{ tabEmptyMsg }}",
+                recordStart : {{ tableInfo.recordStart|default:"0" }},
+                recordEnd : {{ tableInfo.recordEnd|default:"0" }},
+                numOfRecords : {{ tableInfo.numOfRecords }},
+                filterType : [],
+                sortedCol : [],
+                nextPage : {% if tableInfo.nextEnabled %}true{% else %}false{% endif %},
+                tableFunc : {% if tableInfo.numOfRecords %}true{% else %}false{% endif %}
+            });
+
+            $('.checkAct').addClass('form-control');
+            $('.pageSel').addClass('form-control');
+            $('.textSearch').addClass('form-control');
+            $('.btn_checkAct').addClass('btn btn-info');
+            $('.btn_textSearch').addClass('btn btn-info');
+        });
+    </script>
+{% endblock %}
