@@ -58,6 +58,7 @@ note: the sd card when mounted have 2 partition (example: sda, sda1), shown in /
 After obtaining the image file, follow section 1 to write the image onto SD card.
 
 5. Configure the communication between pi:
+--------------------------------
 <pre>
 rename the hostname for raspberry pi to prevent confusion between devices. 
 <code>sudo nano /etc/hostname</code>
@@ -69,6 +70,7 @@ After changing the hostname, edit the hosts file to allow other device able to p
 </pre>
 
 6. Configuring SSH authorize key:
+--------------------------------
 <pre> 
 1) Boot up the raspberry pi
 2) <code>ssh-keygen</code>
@@ -80,6 +82,7 @@ note: hostname in term of other raspberry pi in the cluster.
 Repet section 5 and 6 on all raspberry pi
 
 7. Configure GlusterFS server
+--------------------------------
 <pre>
 *Configure only on 1 of the raspberry pi in the cluster.
 1) sudo gluster peer probe 'hostname'
@@ -91,6 +94,7 @@ note: hostname in terms of other raspberry pi in the cluster, if there is more t
 </pre>
 
 8. Installing web server:
+--------------------------------
 <pre>
 *Configure only on 1 of the raspberry pi in the cluster.
 1) sudo apt-get install nginx
@@ -104,18 +108,22 @@ note: hostname in terms of other raspberry pi in the cluster, if there is more t
 </pre>
 
 9. Edit uwsgi parameters
+--------------------------------
 *Only on the pi that is configured as web server
 <pre>
 1) Edit src/one_uwsgi.ini
     1.1) Make sure all the directory listed in this file is correct, the '%(homepath)' is similar to putting '/home/pi'
 </pre>
+
 10. Mounting GlusterFS volume:
+--------------------------------
 <pre>
 1) sudo nano /etc/fstab and add in this line
     1.1) 'hostname:/'gluster volume name' /home/pi/onDemandNetwork/archive/encrypted glusterfs defaults,_netdev 0 0'
     note: hostname in terms of the raspberry pi hostname that is used to create the gluster volume.
 </pre>
-10. Installing Database
+11. Installing Database
+--------------------------------
 <pre>
 1) Install <a href='http://www.neo4j.org/download/other_versions'> Neo4J</a> on another machine (on Desktop or Laptop as Raspberry pi does not have enough system resources to run the database.)
 note: Only install version < 1.9.6 as Neo4Django have not support version 2.0.0 onwards.
@@ -134,7 +142,8 @@ note: Only install version < 1.9.6 as Neo4Django have not support version 2.0.0 
 3) To start the database <code>bin/neo4j start</code>
 </pre>
 
-11. Edit settings.py:
+12. Edit settings.py:
+--------------------------------
 <pre>
 
 NEO4J_DATABASES = {
@@ -146,8 +155,10 @@ NEO4J_DATABASES = {
 }
 </pre>
 
-12. To run the project on the web:
+13. To run the project on the web:
 <pre>
 1) sudo service nginx restart
 2) cd into src directory, run this command: <code>uwsgi --ini one_uwsgi.ini</code>
+3) On your desktop or laptop, go to http://webserverIP/main/login
+note: desktop or laptop must belong to the same network as the raspberry pi cluster.
 </pre>
