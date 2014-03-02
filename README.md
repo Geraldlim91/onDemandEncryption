@@ -1,4 +1,4 @@
-onDemandEncryption
+onDemandNetworkEncryption
 ==================
 
 1. Writing OS img file on SD Card:
