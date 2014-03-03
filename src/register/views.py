@@ -35,7 +35,6 @@ def register(request):
             userIns.is_active = True
             userIns.is_staff = True
             userIns.save()
-            #SendMail([userIns.email], 'New STAMP Account Created', msgs, request)
             return HttpResponseRedirect(reverse('login'))
         else:
             pass

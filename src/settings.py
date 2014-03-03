@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'db.sqlite3',
         }
 }
 
@@ -44,11 +44,11 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
 SECRET_KEY = '9v)ccw-s04j&_uil^u$yvl4z@()fqfjlv)n%se7y%@*@biu0g2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
